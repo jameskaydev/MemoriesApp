@@ -4,12 +4,12 @@ import LogoSmall from "./svg/LogoSmall";
 import ManuBar from "./svg/MenuBar";
 
 interface HomeTopBarProps {
-  empty: boolean;
+  memories: string[];
 }
 
-const HomeTopBar = ({ empty }: HomeTopBarProps) => {
+const HomeTopBar = ({ memories }: HomeTopBarProps) => {
   return (
-    <View style={{ paddingBottom: 24 }}>
+    <View style={{ paddingBottom: 48 }}>
       <View style={styles().menuBarContainer}>
         <TouchableOpacity>
           <ManuBar width="50" height="50" />
@@ -17,9 +17,9 @@ const HomeTopBar = ({ empty }: HomeTopBarProps) => {
       </View>
 
       <View>
-        {empty ? <EmptyContent /> : <NotEmptyContent />}
-
-        {!empty && (
+        {!memories.length ? <EmptyContent /> : <NotEmptyContent />}
+        
+        {memories.length && (
           <TouchableOpacity style={styles().homeSeeAllContainer}>
             <Text
               style={[

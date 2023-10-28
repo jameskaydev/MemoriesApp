@@ -94,7 +94,8 @@ export const HomeStyles = () => StyleSheet.create({
     marginBottom: 20,
   },
   homeColors: {
-    marginTop: 20
+    marginTop: 20,
+    width: width*0.8
   },
   startBoxContainer: {
     marginBottom: 50
@@ -143,14 +144,15 @@ export const HomeStyles = () => StyleSheet.create({
     width: width*0.65,
     borderWidth: 3,
     borderColor: '#252525',
-    borderRadius: 30
+    borderRadius: 30,
+    marginLeft: 15
   },
   memoryCardImage: {
     width: width*0.65,
     borderRadius: 30,
   },
   memoryCardInfoContainer: {
-    position: 'absolute', 
+    position: 'absolute',
     bottom: 11,
     right: 11,
     left: 11,
