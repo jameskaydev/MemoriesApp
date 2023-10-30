@@ -175,7 +175,7 @@ export const HomeStyles = () => StyleSheet.create({
   }
 })
 
-
+// Enterance
 export const AuthStyles = () => StyleSheet.create({
   enteranceTitle: {
     fontSize: 88,
@@ -192,4 +192,43 @@ export const AuthStyles = () => StyleSheet.create({
     lineHeight: 24,
     marginTop: 40
   }
+})
+
+// Sign Up
+export const SignupStyles = (margin?:number) => StyleSheet.create({
+  title: {
+    fontSize: 48,
+    marginTop: 130,
+    marginLeft: 15
+  },
+  formContainer: {
+    marginTop: 108
+  },
+  input: {
+    borderBottomColor: '#252525',
+    borderBottomWidth: 1,
+    marginHorizontal: 15,
+    paddingBottom: 3,
+    paddingLeft: 12,
+    fontSize: 20,
+    marginBottom: margin
+  },
+  passContainer: {
+    // ...redBorder,
+    position: 'relative'
+  },
+  formBtn: {
+    backgroundColor: "#252525",
+    borderRadius: 30,
+    justifyContent: "center",
+    // flex: 1,
+    marginHorizontal: 15,
+    paddingVertical: 15
+  },
+  formBtnTxt: {
+    textAlign: "center",
+    fontFamily: "AveriaSerifLibre_400Regular",
+    color: "#FFF",
+    fontSize: 20,
+  },
 })

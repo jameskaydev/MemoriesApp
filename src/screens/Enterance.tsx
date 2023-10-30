@@ -8,11 +8,13 @@ import SvgButton from "../components/SvgButton";
 import LogoMain from "../components/svg/LogoMain";
 import Button from "../components/Button";
 import LinkButton from "../components/LinkButton";
+import { useNavigation } from "@react-navigation/core";
 
 const Enterance = () => {
   const { width, height } = Dimensions.get("window");
+  const navigation = useNavigation();
   return (
-    <SafeAreaView style={{height: height}}>
+    <SafeAreaView style={{ height: height }}>
       <View style={styles().enteranceTitleContainer}>
         <Text
           style={[
@@ -39,7 +41,11 @@ const Enterance = () => {
           <SvgButton width={60} height={60} />
           <SvgButton width={60} height={60} />
           <SvgButton width={60} height={60} />
-          <Button text="Sign Up" />
+          <Button
+            text="Sign Up"
+            onpress={() => navigation.navigate("Signup" as never)}
+            navigation={navigation}
+          />
         </View>
 
         <View style={{ marginTop: 40 }}>
@@ -53,17 +59,17 @@ const Enterance = () => {
           >
             Do you already have an account?
           </Text>
-          <LinkButton text="Sign In" />
+          <LinkButton text="Sign In" onpress={() => navigation.navigate("Signin" as never)} />
         </View>
       </View>
-        <Image
-          source={require("../../assets/images/bottom_colos.png")}
-          style={{
-            width: width,
-            position: 'absolute',
-            bottom: 0
-          }}
-        />
+      <Image
+        source={require("../../assets/images/bottom_colos.png")}
+        style={{
+          width: width,
+          position: "absolute",
+          bottom: 0,
+        }}
+      />
     </SafeAreaView>
   );
 };

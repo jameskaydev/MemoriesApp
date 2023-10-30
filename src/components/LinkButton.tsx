@@ -3,9 +3,10 @@ import { View, Text, TouchableOpacity, Image } from "react-native";
 interface LinkButtonProps {
   text: string;
   preText?: string;
+  onpress: () => void
 }
 
-const LinkButton = ({ text, preText }: LinkButtonProps) => {
+const LinkButton = ({ text, preText, onpress }: LinkButtonProps) => {
   return (
     <View
       style={{
@@ -13,11 +14,19 @@ const LinkButton = ({ text, preText }: LinkButtonProps) => {
         justifyContent: "center"
       }}
     >
-      {preText ? <Text>{preText}</Text> : null}
+      {preText ? <Text
+       style={{
+        fontFamily: "AveriaSerifLibre_400Regular",
+        fontSize: 20,
+        textAlign: "center",
+        marginRight: 10
+      }}
+      >{preText}</Text> : null}
       <TouchableOpacity
         style={{
           flexDirection: "row",
         }}
+        onPress={onpress}
       >
         <Text
           style={{
