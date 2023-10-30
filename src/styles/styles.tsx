@@ -1,7 +1,14 @@
 import { StyleSheet, Dimensions } from "react-native"
 
 const {width, height} = Dimensions.get("window")
-
+const redBorder = {
+  borderWidth: 4,
+  borderColor: 'red'
+}
+const greenBorder = {
+  borderWidth: 4,
+  borderColor: 'green'
+}
 // Onboarding Slide
 interface OnboardingSlide {
   txtColor?: string;
@@ -166,4 +173,62 @@ export const HomeStyles = () => StyleSheet.create({
     color: '#FFF',
     fontSize: 18
   }
+})
+
+// Enterance
+export const AuthStyles = () => StyleSheet.create({
+  enteranceTitle: {
+    fontSize: 88,
+    lineHeight: 70,
+    // ...greenBorder
+  },
+  enteranceTitleContainer: {
+    paddingTop: 94,
+    paddingLeft: 15,
+    // ...redBorder
+  },
+  enteranceDesc: {
+    fontSize: 20,
+    lineHeight: 24,
+    marginTop: 40
+  }
+})
+
+// Sign Up
+export const SignupStyles = (margin?:number) => StyleSheet.create({
+  title: {
+    fontSize: 48,
+    marginTop: 130,
+    marginLeft: 15
+  },
+  formContainer: {
+    marginTop: 108
+  },
+  input: {
+    borderBottomColor: '#252525',
+    borderBottomWidth: 1,
+    marginHorizontal: 15,
+    paddingBottom: 3,
+    paddingLeft: 12,
+    fontSize: 20,
+    marginBottom: margin
+  },
+  passContainer: {
+    // ...redBorder,
+    position: 'relative'
+  },
+  formBtn: {
+    backgroundColor: "#252525",
+    borderRadius: 30,
+    justifyContent: "center",
+    // flex: 1,
+    marginHorizontal: 15,
+    paddingVertical: 15
+  },
+  formBtnTxt: {
+    textAlign: "center",
+    fontFamily: "AveriaSerifLibre_400Regular",
+    color: "#FFF",
+    fontSize: 20,
+  },
 })

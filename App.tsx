@@ -1,15 +1,16 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import "react-native-gesture-handler"
 
-//Components
-import StackHome from "./src/navigation/StackHome";
+//Stacks
+import HomeStack from "./src/navigation/HomeStack";
+import AuthStack from "./src/navigation/AuthStack";
 
 export default function App() {
   return (
     <NavigationContainer>
-      <StackHome />
+      {/* <HomeStack /> */}
+      <AuthStack />
     </NavigationContainer>
   );
 }
