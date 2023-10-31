@@ -1,8 +1,10 @@
 import { View, Text, Image, StyleSheet, Dimensions, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useNavigation } from "@react-navigation/core";
 
 const { width, height } = Dimensions.get("window");
 const Success = () => {
+  const navigation = useNavigation()
   return (
     <SafeAreaView style={[styles.main]}>
       <View>
@@ -31,7 +33,7 @@ const Success = () => {
           bottom: 0,
         }}
       >
-                <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("Signin" as never)}>
           <View style={styles.formBtn}>
             <Text
               style={[

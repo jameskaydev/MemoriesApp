@@ -14,7 +14,7 @@ const Enterance = () => {
   const { width, height } = Dimensions.get("window");
   const navigation = useNavigation();
   return (
-    <SafeAreaView style={{ height: height }}>
+    <SafeAreaView style={{ height: '100%' }}>
       <View style={styles().enteranceTitleContainer}>
         <Text
           style={[

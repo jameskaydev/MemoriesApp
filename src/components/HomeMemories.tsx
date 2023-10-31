@@ -5,7 +5,7 @@ import HomeMemoryCard from "./HomeMemoryCard";
 import { Svg, Rect } from "react-native-svg";
 
 const HomeMemories = () => {
-  const [memories] = useState(["some"]);
+  const [memories] = useState(['some']);
   return (
     <View>
       <HomeTopBar memories={memories} />

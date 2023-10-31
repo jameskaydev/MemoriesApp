@@ -7,9 +7,11 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useNavigation } from "@react-navigation/core";
 
 const { width, height } = Dimensions.get("window");
 const Failure = () => {
+  const navigation = useNavigation()
   return (
     <SafeAreaView style={[styles.main]}>
       <View style={styles.titleContainer}>
@@ -41,7 +43,9 @@ const Failure = () => {
           bottom: 0,
         }}
       >
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("Enterance" as never)}
+        >
           <View style={styles.tryBtn}>
             <Text
               style={[
@@ -56,7 +60,9 @@ const Failure = () => {
           </View>
         </TouchableOpacity>
 
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("Signup" as never)}
+        >
           <View style={styles.backBtn}>
             <Text
               style={[

@@ -1,6 +1,6 @@
 import { StyleSheet, Dimensions } from "react-native"
 
-const {width, height} = Dimensions.get("window")
+const { width, height } = Dimensions.get("window")
 const redBorder = {
   borderWidth: 4,
   borderColor: 'red'
@@ -21,18 +21,18 @@ interface OnboardingSlide {
   isImageFullWidth?: boolean;
 }
 
-export const onboardingSlideStyles = ( props: OnboardingSlide ) => StyleSheet.create({
+export const onboardingSlideStyles = (props: OnboardingSlide) => StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: props.flexDir,
-    height: height,
+    height: '100%',
     width: width,
     backgroundColor: props.bgColor
   },
   textBox: {
     marginLeft: 15,
     marginRight: 15,
-    height: props.height ? height*props.height : null,
+    height: props.height ? height * props.height : null,
     marginTop: props.flexDir === 'column' ? 120 : 0,
     textAlign: props.dir,
   },
@@ -49,7 +49,7 @@ export const onboardingSlideStyles = ( props: OnboardingSlide ) => StyleSheet.cr
     textAlign: props.dir
   },
   imageContainer: {
-    width: props.isImageFullWidth ? width : width-30,
+    width: props.isImageFullWidth ? width : width - 30,
     flex: 1,
     justifyContent: 'center',
     alignItems: props.isImageFullWidth ? 'flex-end' : 'flex-start',
@@ -57,10 +57,10 @@ export const onboardingSlideStyles = ( props: OnboardingSlide ) => StyleSheet.cr
     marginRight: props.isImageFullWidth ? 0 : 15,
   },
   image: {
-    width: props.isImageFullWidth ? (props.imageWidth ? width*props.imageWidth : width
-      ) : (
-        props.imageWidth ? width*props.imageWidth : width-30
-      ),
+    width: props.isImageFullWidth ? (props.imageWidth ? width * props.imageWidth : width
+    ) : (
+      props.imageWidth ? width * props.imageWidth : width - 30
+    ),
     height: height,
     resizeMode: 'contain',
   },
@@ -102,13 +102,13 @@ export const HomeStyles = () => StyleSheet.create({
   },
   homeColors: {
     marginTop: 20,
-    width: width*0.8
+    width: width * 0.8
   },
   startBoxContainer: {
     marginBottom: 50
   },
   startBoxBg: {
-    height: height*0.30,
+    height: height * 0.30,
     marginLeft: 15,
     marginRight: 15,
     paddingLeft: 25,
@@ -127,7 +127,7 @@ export const HomeStyles = () => StyleSheet.create({
   startBoxBtn: {
     position: 'absolute',
     right: 0,
-    bottom: 4,
+    bottom: 0,
     paddingVertical: 18,
     left: '65%',
     borderWidth: 1,
@@ -148,14 +148,14 @@ export const HomeStyles = () => StyleSheet.create({
     fontSize: 20
   },
   memoryCard: {
-    width: width*0.65,
+    width: width * 0.65,
     borderWidth: 3,
     borderColor: '#252525',
     borderRadius: 30,
     marginLeft: 15
   },
   memoryCardImage: {
-    width: width*0.65,
+    width: width * 0.65,
     borderRadius: 30,
   },
   memoryCardInfoContainer: {
@@ -167,7 +167,7 @@ export const HomeStyles = () => StyleSheet.create({
     backgroundColor: 'rgba(37, 37, 37, 0.40)',
     paddingBottom: 10,
     paddingTop: 10,
-    paddingLeft: 18 
+    paddingLeft: 18
   },
   memoryCardInfoText: {
     color: '#FFF',
@@ -195,7 +195,25 @@ export const AuthStyles = () => StyleSheet.create({
 })
 
 // Sign Up
-export const SignupStyles = (margin?:number) => StyleSheet.create({
+interface Error {
+  error: boolean;
+  message: string;
+}
+
+interface SignupStyleProps {
+  margin?: number;
+  error?: Error;
+  isBlank?: boolean;
+  isPass?: boolean;
+}
+
+const emailErrors = [
+  "Password don't match!",
+  "Email alreay exists!",
+  "Invalid email address!"
+]
+
+export const SignupStyles = ({ margin, error, isBlank, isPass }: SignupStyleProps) => StyleSheet.create({
   title: {
     fontSize: 48,
     marginTop: 130,
@@ -205,7 +223,14 @@ export const SignupStyles = (margin?:number) => StyleSheet.create({
     marginTop: 108
   },
   input: {
-    borderBottomColor: '#252525',
+    borderBottomColor: isPass ?
+      (
+        isBlank ? 'red' : (error?.message === "Passwords don't match!" ? 'red' : '#252525')
+      ) : (
+        isBlank ? 'red' : (
+          emailErrors.includes(error?.message as never) ?
+          'red' : '#252525'
+        )),
     borderBottomWidth: 1,
     marginHorizontal: 15,
     paddingBottom: 3,
