@@ -1,23 +1,30 @@
 import { View, Text, FlatList, StyleSheet } from 'react-native'
 import MessageBox from './onboarding/MessageBox'
 
+interface ArrayProps {
+  hidden: boolean;
+  id: string;
+  message: string;
+  sender: string;
+  type: string;
+}
+
 interface Props {
-  messages: JSON[]
+  messages: ArrayProps[]
 }
 
 const ChatMessages = ({ messages }: Props) => {
+  // console.log(messages)
   return (
-    <View>
+    <View style={{
+      flexDirection: 'column', 
+      height: '100%'
+    }}>
       <FlatList
-        data={messages}
-        renderItem={({item}) => {
-        if ( JSON.parse(item as any).sender === 'assistant' ) {
-          return <MessageBox message={item} />
-        } else {
-          return <MessageBox message={item} />
-        }
-        // return <MessageBox message={item} />
-      }}
+        data={messages.reverse()} 
+        keyExtractor={(_, index) => index.toString()}
+        inverted={true}
+        renderItem={({item}) => <MessageBox message={item.message} sender={item.sender} />}
       />
     </View>
   )

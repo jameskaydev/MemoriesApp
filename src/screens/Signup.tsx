@@ -27,7 +27,7 @@ const Signup = () => {
   const [isRepeatPassVisibile, setIsRepeatPassVisible] = useState(false);
   const [error, setError] = useState({ error: false, message: '' });
 
-  const { width, height } = Dimensions.get("window")
+  const { width } = Dimensions.get("window")
   const navigation = useNavigation();
 
   const handleSignup = () => {

@@ -11,7 +11,7 @@ const AuthStack = () => {
   const AuthStack = createNativeStackNavigator();
   return (
     <AuthStack.Navigator 
-      initialRouteName='Signup'
+      initialRouteName='Enterance'
       screenOptions={{
         headerShown: false
       }}

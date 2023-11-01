@@ -9,8 +9,8 @@ import AuthStack from "./src/navigation/AuthStack";
 export default function App() {
   return (
     <NavigationContainer>
-      <HomeStack />
-      {/* <AuthStack /> */}
+      {/* <HomeStack /> */}
+      <AuthStack />
     </NavigationContainer>
   );
 }

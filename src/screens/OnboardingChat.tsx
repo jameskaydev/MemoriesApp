@@ -1,56 +1,69 @@
-import { View, Text, TouchableOpacity } from 'react-native'
-import { db } from '../../firebaseConfig'
-import { doc, getDoc, collection, addDoc, CollectionReference } from 'firebase/firestore'
-import { useEffect, useState } from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import ChatMessages from '../components/ChatMessages'
+import { db } from "../../firebaseConfig";
+import { doc, getDoc, collection, addDoc } from "firebase/firestore";
+import { useEffect, useState } from "react";
+import { SafeAreaView } from "react-native-safe-area-context";
+import ChatMessages from "../components/ChatMessages";
+import UserInput from "../components/onboarding/UserInput";
+import parseJsonArray from "../utils/parseArrayofJson";
+import dividePrompts from "../utils/dividePrompts";
 
-
-const OnboardingChat = () => {
-  const [data, setData] = useState<JSON[]>([])
-  useEffect(() => {
-    const getPrompts = async () => {
-      const promptsRef = doc(db, 'prompts', 'OnBoarding');
-      const prompts = await getDoc(promptsRef);
-      if ( prompts.exists() ) {
-        // console.log(JSON.parse((prompts.data().messages))) 
-        // console.log(prompts.data().messages)
-        const final = await prompts.data().messages
-        setData(final)
-        // console.log(final)
-        // final.forEach((item: any) => {
-        //   console.log(JSON.parse(item).id)
-        // })
-      } else {
-        console.log('no such a doc exists')
-      }
-    }
-
-    getPrompts()
-  }, [])
-
-  const handleAddDoc = () => {
-    const collectionRef = collection(db, 'users');
-    addDoc(collectionRef, {
-      is_onboarding_complete: true,
-      name: 'james'
-    }).then(() => {
-      console.log('added successfuly')
-    }).catch(e => {
-      console.log(e)
-    })
-  }
-
-  const parseJsonArray = (arr: JSON[]) => {
-    const parsedArr = arr.map(item => JSON.parse(item as never))
-    return parsedArr;
-  }
-
-  return (
-    <SafeAreaView>
-      <ChatMessages messages={data} />
-    </SafeAreaView>
-  )
+interface Action {
+  properties?: string[];
+  type: string;
 }
 
-export default OnboardingChat
+interface ArrayProps {
+  action?: Action;
+  hidden: boolean;
+  id: string;
+  message: string;
+  sender: string;
+  type: string;
+}
+
+const OnboardingChat = () => {
+  const [data, setData] = useState<ArrayProps[]>([])
+  useEffect(() => {
+    const getPrompts = async () => {
+      const promptsRef = doc(db, "prompts", "OnBoarding");
+      const prompts = await getDoc(promptsRef);
+      if (prompts.exists()) {
+        const jsonData = await prompts.data().messages;
+        const final = parseJsonArray(jsonData); 
+        setData(final)
+        const divided = dividePrompts(final)
+        setData(divided[0])
+        console.log(divided) 
+      } else {
+        console.log("no such a doc exists");
+      }
+    };
+
+    getPrompts();
+  }, []);
+  
+  return (
+    <SafeAreaView style={{
+       height: '100%',
+       paddingBottom: 100
+    }}>
+      <ChatMessages messages={data} />
+      <UserInput />
+    </SafeAreaView>
+  );
+};
+
+export default OnboardingChat;
+
+
+  // const handleAddDoc = () => {
+  //   const collectionRef = collection(db, 'users');
+  //   addDoc(collectionRef, {
+  //     is_onboarding_complete: true,
+  //     name: 'james'
+  //   }).then(() => {
+  //     console.log('added successfuly')
+  //   }).catch(e => {
+  //     console.log(e)
+  //   })
+  // }

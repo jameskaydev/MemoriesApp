@@ -31,6 +31,13 @@
       "eas": {
         "projectId": "0cbdc869-d004-4095-acb9-afe21321a3a0"
       }
-    }
+    },
+    "plugins": [
+    ["react-native-fbsdk-next",         {
+      "appID": "1061944271657858",
+      "clientToken": "87565522f6af8d412d7b32cd50453e8d",
+      "displayName": "moments"
+    }]
+  ]
   }
 }
