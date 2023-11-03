@@ -1,37 +1,56 @@
-import { View, Text, FlatList, StyleSheet } from 'react-native'
-import MessageBox from './onboarding/MessageBox'
+import { View, Text, FlatList, StyleSheet } from "react-native";
+import { useEffect, useState } from "react";
+import MessageBox from "./onboarding/MessageBox";
 
 interface ArrayProps {
-  hidden: boolean;
-  id: string;
+  properties?: string[] | null;
+  hidden?: boolean;
+  id?: string;
   message: string;
   sender: string;
-  type: string;
+  type?: string;
 }
 
-interface Props {
-  messages: ArrayProps[]
+interface MessagesProps {
+  messages: ArrayProps[];
 }
 
-const ChatMessages = ({ messages }: Props) => {
-  // console.log(messages)
+const ChatMessages = ({ messages }: any) => {
+  // console.log("this is me");
+  // console.log(messages.length)
+  // console.log(messages);
   return (
-    <View style={{
-      flexDirection: 'column', 
-      height: '100%'
-    }}>
+    <View
+      style={{
+        flexDirection: "column",
+        height: "100%",
+      }}
+    >
       <FlatList
-        data={messages.reverse()} 
+        data={messages}
         keyExtractor={(_, index) => index.toString()}
         inverted={true}
-        renderItem={({item}) => <MessageBox message={item.message} sender={item.sender} />}
+        renderItem={({ item }) => {
+          // console.log(item)
+          // <MessageBox message={item.message} sender={item.sender} />
+          return (
+            <FlatList
+              data={item}
+              keyExtractor={(_, index) => index.toString()}
+              renderItem={(i: any) => {
+                // console.log(i.item.message)
+                return (
+                <MessageBox message={i.item.message} sender={i.sender} />
+              )
+            }}
+            />
+          );
+        }}
       />
     </View>
-  )
-}
+  );
+};
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create({});
 
-})
-
-export default ChatMessages
+export default ChatMessages;

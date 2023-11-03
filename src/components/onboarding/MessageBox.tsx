@@ -16,6 +16,7 @@ const MessageBox = ({
   message: string;
   sender: string;
 }) => {
+  // console.log(message)
   const [fmessage, setFmessage] = useState<string>("");
   useFonts({ AveriaSerifLibre_400Regular });
   useEffect(() => {

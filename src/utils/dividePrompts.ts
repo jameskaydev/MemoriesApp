@@ -1,10 +1,5 @@
-interface Action {
-  properties?: string[];
-  type: string;
-}
-
 interface Props {
-  action?: Action;
+  properties?: string[];
   hidden: boolean;
   id: string;
   message: string;
@@ -12,26 +7,27 @@ interface Props {
   type: string;
 }
 
-const dividePrompts = (props: Props[]) => {
-  const mainArray = <Props[][]>[];
-  const newArray = <Props[]>[];
-  props.forEach((item, index) => {
-    if ( item.action ) {
-      newArray.push(item);
-      const aa = [...newArray];
-      mainArray.push(aa);
-      // console.log(mainArray)
-      newArray.splice(0)
-      // if ( index === props.length-1 ) {
-      //   console.log(mainArray)
-      // }
+function dividePrompts(originalArray: Props[]): Props[][] {
+  // console.log(originalArray)
+  const dividedArray: Props[][] = [];
+  let currentGroup: Props[] = [];
+
+  // console.log('--------------')
+  originalArray.forEach(item => {
+    // console.log('*******')
+    // console.log(item?.action?.type ? 'HAS' : 'NHAS')
+    // console.log(item?.action?.type)
+    if ( item?.type !== "CHAT" ) {
+      currentGroup.push(item)
+      dividedArray.push([...currentGroup])
+      currentGroup = []
     } else {
-      newArray.push(item);
-    } 
+      currentGroup.push(item)
+    }
   })
 
-  return mainArray;
-  // console.log(mainArray)
+  // console.log(dividedArray)
+  return dividedArray;
 }
 
 export default dividePrompts
