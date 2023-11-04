@@ -66,7 +66,6 @@ const UserInput = ({ options }: Props) => {
           onPress={() => {
             inputValue.trim()
               ? (() => {
-                  // pushToMessages({ message: inputValue, sender: 'user'})
                   setInputValue("");
                 })()
               : null;

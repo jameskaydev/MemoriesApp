@@ -6,7 +6,8 @@ import ChatMessages from "../components/ChatMessages";
 import UserInput from "../components/onboarding/UserInput";
 import parseJsonArray from "../utils/parseArrayofJson";
 import dividePrompts from "../utils/dividePrompts";
-import { TouchableOpacity, Text } from "react-native";
+import Datepicker from "../components/onboarding/Datepicker";
+import { TouchableOpacity, Text, View } from "react-native";
 
 interface ArrayProps {
   hidden?: boolean;
@@ -54,11 +55,13 @@ const OnboardingChat = () => {
   const inputGenerator = () => {
     switch ( currentData[(currentData.length - 1) as any].type ) {
       case "INPUT":
-        return <UserInput />
+        return <Datepicker />
+        // return <UserInput />
       case "INPUT_OPTIONS":
-        return <UserInput options={["name1", "name2", "name3", "name4"]} />
+        // return <UserInput options={["name1", "name2", "name3", "name4"]} />
+        return <Datepicker />
       case "DATE_PICKER":
-        // return <Date />
+        return <Datepicker />
     }
   }
 
