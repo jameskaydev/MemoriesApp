@@ -127,7 +127,7 @@ export const HomeStyles = () => StyleSheet.create({
   startBoxBtn: {
     position: 'absolute',
     right: 0,
-    bottom: 0,
+    bottom: 5,
     paddingVertical: 18,
     left: '65%',
     borderWidth: 1,
@@ -248,7 +248,7 @@ export const SignupStyles = ({ margin, error, isBlank, isPass }: SignupStyleProp
     justifyContent: "center",
     // flex: 1,
     marginHorizontal: 15,
-    paddingVertical: 15
+    paddingVertical: 20
   },
   formBtnTxt: {
     textAlign: "center",

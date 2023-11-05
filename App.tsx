@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { StyleSheet } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
-import { useFonts, AveriaSerifLibre_400Regular, AveriaSerifLibre_700Bold } from "@expo-google-fonts/averia-serif-libre";
+import { useFonts, AveriaSerifLibre_400Regular, AveriaSerifLibre_700Bold, AveriaSerifLibre_300Light } from "@expo-google-fonts/averia-serif-libre";
 import * as SplashScreen from "expo-splash-screen";
 import "react-native-gesture-handler"
 
@@ -11,11 +11,15 @@ import AuthStack from "./src/navigation/AuthStack";
 import AppLoading from "./src/components/AppLoading";
 
 // SplashScreen.preventAutoHideAsync();
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import Onboarding from "./src/screens/Onboarding";
+const Stack = createNativeStackNavigator()
 
 export default function App() {
   const [fontsLoaded] = useFonts({
     AveriaSerifLibre_400Regular,
-    AveriaSerifLibre_700Bold
+    AveriaSerifLibre_700Bold,
+    AveriaSerifLibre_300Light
   })
 
   if (!fontsLoaded) {
@@ -30,7 +34,13 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      <HomeStack />
+      <Stack.Navigator screenOptions={{
+        headerShown: false
+      }}>
+        <Stack.Screen name="Onboarding" component={Onboarding} />
+      </Stack.Navigator>
+      {/* <HomeStack /> */}
+
       {/* <AuthStack /> */}
     </NavigationContainer>
   );

@@ -1,5 +1,5 @@
-import { db } from "../../firebaseConfig";
-import { doc, getDoc, collection, addDoc } from "firebase/firestore";
+import { db, auth } from "../../firebaseConfig";
+import { doc, getDoc, collection, setDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import ChatMessages from "../components/ChatMessages";
@@ -70,9 +70,7 @@ const OnboardingChat = () => {
         setData([divided[0]]);
         setCurrentData([...(divided[0] as any)]);
         setMainMessages(divided[0].reverse())
-        // setMainMessages(divided[0])
         setCurrentIndex(currentIndex + 1);
-        console.log(mainMessages)
       } else {
         console.log("no such a doc exists");
       }
@@ -88,6 +86,17 @@ const OnboardingChat = () => {
   };
   
   const navigation = useNavigation()
+
+  const handleAddDoc = () => {
+    const userid = auth.currentUser?.uid;
+    // const collectionRef = collection(db, 'users'); 
+    const docRef = doc(db, 'users', userid as never)
+    setDoc(docRef, userData).then(() => {
+      navigation.navigate('Home' as never);
+    }).catch(e => {
+      console.log(e)
+    })
+  }
   
   const sendEventHandler = ( property: string, value: string) => {
     if ( property !== 'links' ) {
@@ -99,9 +108,9 @@ const OnboardingChat = () => {
         ...mainMessages, 
       ])
     } else {
-      navigation.navigate('Home' as never);
+        handleAddDoc()
     }
-    console.log(mainMessages)
+    // console.log(mainMessages)
   }
 
   const inputGenerator = () => {
@@ -113,7 +122,7 @@ const OnboardingChat = () => {
         type="name"
         />
       case "INPUT_OPTIONS":
-        return <UserInput 
+        return <UserInput
         options={["name1", "name2", "name3", "name4"]} 
         input={true}
         sendEventHandler={sendEventHandler} 
@@ -155,15 +164,3 @@ const OnboardingChat = () => {
 };
 
 export default OnboardingChat;
-
-// const handleAddDoc = () => {
-//   const collectionRef = collection(db, 'users');
-//   addDoc(collectionRef, {
-//     is_onboarding_complete: true,
-//     name: 'james'
-//   }).then(() => {
-//     console.log('added successfuly')
-//   }).catch(e => {
-//     console.log(e)
-//   })
-// }

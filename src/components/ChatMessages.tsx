@@ -16,9 +16,6 @@ interface MessagesProps {
 }
 
 const ChatMessages = ({ messages }: any) => {
-  // console.log("this is me");
-  // console.log(messages.length)
-  // console.log(messages);
   return (
     <View
       style={{

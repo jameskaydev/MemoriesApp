@@ -5,18 +5,30 @@ import {
   TouchableOpacity,
   Image,
 } from "react-native";
+// import firebas
 import { HomeStyles as styles } from "../styles/styles";
-import {
-  useFonts,
-  AveriaSerifLibre_700Bold,
-  AveriaSerifLibre_400Regular,
-} from "@expo-google-fonts/averia-serif-libre";
+import { useState, useEffect } from "react";
+import { auth, db } from "../../firebaseConfig";
+import * as firebase from 'firebase/app'
+import { doc, getDoc } from "firebase/firestore";
 
 const StartBox = () => {
-  useFonts({
-    AveriaSerifLibre_700Bold,
-    AveriaSerifLibre_400Regular,
-  });
+  const [name, setName] = useState('');
+
+  useEffect(() => {
+    const checkName = async () => {
+      const user = auth.currentUser
+      const docRef = doc(db, "users", user?.uid as never);
+      const docc = await getDoc(docRef);
+      if ( docc.exists() ) {
+        setName(docc.data().name)
+      } else {
+        setName('does not')
+      }
+    }
+
+    checkName()
+  }, [])
   return (
     <View style={styles().startBoxContainer}>
       <ImageBackground
@@ -30,7 +42,7 @@ const StartBox = () => {
             { fontFamily: "AveriaSerifLibre_700Bold" },
           ]}
         >
-          Hey, Josh!
+          Hey, {name}!
         </Text>
         <Text
           style={[

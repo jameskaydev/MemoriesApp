@@ -4,7 +4,8 @@ import {
   TextInput,
   TouchableOpacity, 
   Image,
-  Dimensions
+  Dimensions,
+  ActivityIndicator
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useState } from "react";
@@ -12,7 +13,8 @@ import { useState } from "react";
 import { useNavigation } from "@react-navigation/core";
 import { SignupStyles as styles } from "../styles/styles";
 import { AuthErrorCodes, signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../firebaseConfig";
+import { auth, db } from "../../firebaseConfig";
+import { doc, getDoc } from 'firebase/firestore';
 
 // Components
 import LinkButton from "../components/LinkButton";
@@ -24,6 +26,7 @@ const Signin = () => {
   const [mainPass, setMainPass] = useState("");
   const [isMainPassVisibile, setIsMainPassVisible] = useState(false);
   const [error, setError] = useState({error: false, message: ''})
+  const [isLoading, setIsLoading] = useState(false);
 
   const { width } = Dimensions.get("window")
   const navigation = useNavigation();
@@ -33,9 +36,15 @@ const Signin = () => {
       setError({error: true, message: 'Please fill all blanks!'});
     } else {
       signInWithEmailAndPassword(auth, email, mainPass)
-        .then(userCreds => {
-          console.log("user logged in:" + userCreds.user)
-          // navigation.navigate("somewhere like homepage");
+        .then( async (userCreds) => {
+          const user = auth.currentUser
+          const docRef = doc(db, "users", user?.uid as never);
+          const docc = await getDoc(docRef);
+          if ( docc.data()?.is_onboarding_complete ) {
+            navigation.navigate("Home" as never);
+          } else {
+            navigation.navigate("Onboarding" as never);
+          }
         })
         .catch((err) => {
           console.log(err)
@@ -104,19 +113,29 @@ const Signin = () => {
         {error.error ? <Text style={{ marginBottom: 40, paddingLeft: 15, color: 'red' }}>{error.message}</Text> : null}
 
         <TouchableOpacity
-          onPress={() => handleSignin()}
+          onPress={() => {
+            setIsLoading(true)
+            handleSignin()
+          }}
+          disabled={isLoading}
         >
           <View style={styles({}).formBtn}>
-            <Text
-              style={[
-                styles({}).formBtnTxt,
-                {
-                  fontFamily: "AveriaSerifLibre_400Regular",
-                },
-              ]}
-            >
+            {
+              isLoading ? (
+                <ActivityIndicator size='large' color='#FFF' />
+              ) : (
+                <Text
+                style={[
+                  styles({}).formBtnTxt,
+                  {
+                    fontFamily: "AveriaSerifLibre_400Regular",
+                  },
+                ]}
+                >
               Get Started
             </Text>
+              )
+            }
           </View>
         </TouchableOpacity>
       </View>

@@ -34,7 +34,6 @@ interface Props {
 }
 
 const UserInput = ({ options, input, sendEventHandler, type }: Props) => {
-  const navigation = useNavigation()
   if (type === 'links') {
     return (
       <View style={styles.textInputContainer}>
@@ -58,7 +57,6 @@ const UserInput = ({ options, input, sendEventHandler, type }: Props) => {
     )
   }
   const [inputValue, setInputValue] = useState<any>("");
-  // useFonts({ AveriaSerifLibre_400Regular });
   return (
     <View style={styles.textInputContainer}>
       {options && (
@@ -69,7 +67,10 @@ const UserInput = ({ options, input, sendEventHandler, type }: Props) => {
           showsHorizontalScrollIndicator={false}
           renderItem={({ item, index }) => {
             return (
-              <TouchableOpacity key={index} onPress={() => sendEventHandler(type, item)}
+              <TouchableOpacity key={index} onPress={() => {
+                setInputValue('')
+                sendEventHandler(type, item)
+              }}
                 style={styles.optionBtn}>
                 <Text style={styles.optionBtnTxt}>{item}</Text>
               </TouchableOpacity>
