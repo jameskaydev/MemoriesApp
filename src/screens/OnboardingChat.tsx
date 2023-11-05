@@ -7,7 +7,7 @@ import UserInput from "../components/onboarding/UserInput";
 import parseJsonArray from "../utils/parseArrayofJson";
 import dividePrompts from "../utils/dividePrompts";
 import Datepicker from "../components/onboarding/Datepicker";
-import { TouchableOpacity, Text, View } from "react-native";
+import { useNavigation } from "@react-navigation/core";
 
 interface ArrayProps {
   hidden?: boolean;
@@ -18,11 +18,45 @@ interface ArrayProps {
   properties?: string[] | null;
 }
 
+interface UserDataProps {
+  name: string;
+  nick_name: string;
+  dob: string;
+  pronouns: string;
+  is_onboarding_complete: boolean;
+}
+
 const OnboardingChat = () => {
   const [data, setData] = useState<ArrayProps[][]>([]);
   const [dividedData, setDividedData] = useState<ArrayProps[][]>([]);
-  const [currentIndex, setCurretIndex] = useState<number>(0);
+  const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [currentData, setCurrentData] = useState<ArrayProps[]>([]);
+  const [mainMessages, setMainMessages] = useState<ArrayProps[]>([])
+  const [userData, setUserData] = useState<UserDataProps>({
+    name: '',
+    nick_name: '',
+    dob: '',
+    is_onboarding_complete: false,
+    pronouns: ''
+  });
+
+  const updateUserData = ( property: string, value: string ) => {
+    const updatedUserData = { ...userData };
+    switch ( property ) {
+      case "name":
+        updatedUserData.name = value;
+      case "nick_name":
+        updatedUserData.nick_name = value;
+      case "dob":
+        updatedUserData.dob = value;
+      case "pronouns":
+        updatedUserData.pronouns = value;
+      default:
+        updatedUserData.is_onboarding_complete = true;
+    }
+
+    setUserData(updatedUserData);
+  }
 
   useEffect(() => {
     const getPrompts = async () => {
@@ -34,10 +68,11 @@ const OnboardingChat = () => {
         const divided = dividePrompts(parsedArray);
         setDividedData(divided);
         setData([divided[0]]);
-        // console.log(data)
         setCurrentData([...(divided[0] as any)]);
-        // console.log(currentData[currentData.length - 1])
-        setCurretIndex(currentIndex + 1);
+        setMainMessages(divided[0].reverse())
+        // setMainMessages(divided[0])
+        setCurrentIndex(currentIndex + 1);
+        console.log(mainMessages)
       } else {
         console.log("no such a doc exists");
       }
@@ -49,21 +84,61 @@ const OnboardingChat = () => {
   const manageFlows = () => {
     setData([...data, dividedData[currentIndex as any]]);
     setCurrentData([...dividedData[currentIndex as any]]);
-    setCurretIndex(currentIndex + 1);
+    setCurrentIndex(currentIndex + 1);
   };
+  
+  const navigation = useNavigation()
+  
+  const sendEventHandler = ( property: string, value: string) => {
+    if ( property !== 'links' ) {
+      updateUserData( property, value )
+      manageFlows()
+      setMainMessages([
+        ...dividedData[currentIndex].reverse(), 
+        {message: value, sender: 'user'}, 
+        ...mainMessages, 
+      ])
+    } else {
+      navigation.navigate('Home' as never);
+    }
+    console.log(mainMessages)
+  }
 
   const inputGenerator = () => {
     switch ( currentData[(currentData.length - 1) as any].type ) {
       case "INPUT":
-        return <Datepicker />
-        // return <UserInput />
+        return <UserInput 
+        input={true} 
+        sendEventHandler={sendEventHandler} 
+        type="name"
+        />
       case "INPUT_OPTIONS":
-        // return <UserInput options={["name1", "name2", "name3", "name4"]} />
-        return <Datepicker />
-      case "DATE_PICKER":
-        return <Datepicker />
+        return <UserInput 
+        options={["name1", "name2", "name3", "name4"]} 
+        input={true}
+        sendEventHandler={sendEventHandler} 
+        type="nick_name"
+        />
+        case "DATE_PICKER":
+          return <Datepicker 
+            sendEventHandler={sendEventHandler} 
+            type="dob"
+        />
+      case "PRONOUNCE_OPTIONS":
+        return <UserInput 
+        options={['he/him', 'she/her', 'they/them']}
+        sendEventHandler={sendEventHandler}
+        type="pronouns"
+        />
+      case "FINAL_OPTIONS":
+        return <UserInput 
+          options={["Yes! Let's Go", "Take me to home"]}
+          sendEventHandler={sendEventHandler}
+          type="links"
+        />
     }
   }
+
 
   return (
     <SafeAreaView
@@ -72,18 +147,9 @@ const OnboardingChat = () => {
         paddingBottom: 150,
       }}
     >
-      <ChatMessages messages={data as any} />
+      <ChatMessages messages={mainMessages as any} />
       {currentData[(currentData.length - 1) as any]
         ? inputGenerator() : null}
-      <TouchableOpacity
-        style={{
-          position: "absolute",
-          top: 100,
-        }}
-        onPress={() => manageFlows()}
-      >
-        <Text>Add</Text>
-      </TouchableOpacity>
     </SafeAreaView>
   );
 };

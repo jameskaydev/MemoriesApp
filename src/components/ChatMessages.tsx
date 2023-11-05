@@ -31,20 +31,9 @@ const ChatMessages = ({ messages }: any) => {
         keyExtractor={(_, index) => index.toString()}
         inverted={true}
         renderItem={({ item }) => {
-          // console.log(item)
-          // <MessageBox message={item.message} sender={item.sender} />
-          return (
-            <FlatList
-              data={item}
-              keyExtractor={(_, index) => index.toString()}
-              renderItem={(i: any) => {
-                // console.log(i.item.message)
-                return (
-                <MessageBox message={i.item.message} sender={i.sender} />
-              )
-            }}
-            />
-          );
+            return (
+            <MessageBox message={item.message} sender={item.sender} />
+          )
         }}
       />
     </View>
