@@ -102,11 +102,14 @@ const OnboardingChat = () => {
     if ( property !== 'links' ) {
       updateUserData( property, value )
       manageFlows()
-      setMainMessages([
-        ...dividedData[currentIndex].reverse(), 
-        {message: value, sender: 'user'}, 
-        ...mainMessages, 
-      ])
+      setTimeout(() => {
+
+        setMainMessages([
+          ...dividedData[currentIndex].reverse(), 
+          {message: value, sender: 'user'}, 
+          ...mainMessages, 
+        ])
+      }, 1000)
     } else {
         handleAddDoc()
     }
