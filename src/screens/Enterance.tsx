@@ -1,4 +1,11 @@
-import { View, Text, Image, Dimensions, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  Dimensions,
+  TouchableOpacity,
+  Platform,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 // import signInWithFB from "../utils/signinWithFacebook";
 
@@ -13,10 +20,10 @@ import { useNavigation } from "@react-navigation/core";
 
 const Enterance = () => {
   const { width } = Dimensions.get("window");
-  
+
   const navigation = useNavigation();
   return (
-    <SafeAreaView style={{ height: '100%' }}>
+    <SafeAreaView style={{ height: "100%" }}>
       <View style={styles().enteranceTitleContainer}>
         <Text
           style={[
@@ -40,26 +47,29 @@ const Enterance = () => {
         </Text>
 
         <View style={{ flexDirection: "row", marginRight: 15, marginTop: 30 }}>
-          <TouchableOpacity>
-            <SvgButton company="apple" width={60} height={60} />
-          </TouchableOpacity>
+          {Platform.OS === "ios" && (
+            <TouchableOpacity>
+              <SvgButton company="apple" width={60} height={60} />
+            </TouchableOpacity>
+          )}
 
           <TouchableOpacity>
             <SvgButton company="google" width={60} height={60} />
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => {
-            // signInWithFB()
-            }}>
+          <TouchableOpacity
+            onPress={() => {
+              // signInWithFB()
+            }}
+          >
             <SvgButton company="facebook" width={60} height={60} />
           </TouchableOpacity>
-          
+
           <Button
             text="Sign Up"
             onpress={() => navigation.navigate("Signup" as never)}
             navigation={navigation}
           />
-
         </View>
 
         <View style={{ marginTop: 40 }}>
@@ -73,7 +83,10 @@ const Enterance = () => {
           >
             Do you already have an account?
           </Text>
-          <LinkButton text="Sign In" onpress={() => navigation.navigate("Signin" as never)} />
+          <LinkButton
+            text="Sign In"
+            onpress={() => navigation.navigate("Signin" as never)}
+          />
         </View>
       </View>
       <Image

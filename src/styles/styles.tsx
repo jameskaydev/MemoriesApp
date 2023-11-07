@@ -205,6 +205,7 @@ interface SignupStyleProps {
   error?: Error;
   isBlank?: boolean;
   isPass?: boolean;
+  btnPadding?: number;
 }
 
 const emailErrors = [
@@ -213,7 +214,7 @@ const emailErrors = [
   "Invalid email address!"
 ]
 
-export const SignupStyles = ({ margin, error, isBlank, isPass }: SignupStyleProps) => StyleSheet.create({
+export const SignupStyles = ({ margin, error, isBlank, isPass, btnPadding }: SignupStyleProps) => StyleSheet.create({
   title: {
     fontSize: 48,
     marginTop: 130,
@@ -239,16 +240,14 @@ export const SignupStyles = ({ margin, error, isBlank, isPass }: SignupStyleProp
     marginBottom: margin
   },
   passContainer: {
-    // ...redBorder,
     position: 'relative'
   },
   formBtn: {
     backgroundColor: "#252525",
     borderRadius: 30,
     justifyContent: "center",
-    // flex: 1,
     marginHorizontal: 15,
-    paddingVertical: 20
+    paddingVertical: btnPadding
   },
   formBtnTxt: {
     textAlign: "center",

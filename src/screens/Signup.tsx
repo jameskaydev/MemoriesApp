@@ -38,6 +38,7 @@ const Signup = () => {
     } else if (mainPass !== repeatPass) {
       setError({ error: true, message: "Passwords don't match!" });
     } else {
+      setIsLoading(true)
       createUserWithEmailAndPassword(auth, email, mainPass)
         .then(userCreds => {
           const user = userCreds.user;
@@ -45,6 +46,7 @@ const Signup = () => {
           navigation.navigate("Success" as never);
         })
         .catch(err => {
+          setIsLoading(false)
           console.log(err.code)
           switch (err.code) {
             case AuthErrorCodes.EMAIL_EXISTS:
@@ -134,13 +136,10 @@ const Signup = () => {
         {error.error ? <Text style={{ marginBottom: 40, paddingLeft: 15, color: 'red' }}>{error.message}</Text> : null}
 
         <TouchableOpacity
-          onPress={() => {
-            setIsLoading(true)
-            handleSignup()
-          }}
+          onPress={() => handleSignup()}
           disabled={isLoading}
         >
-          <View style={styles({}).formBtn}>
+          <View style={styles({btnPadding: isLoading ? 21 : 20}).formBtn}>
             {isLoading ? (
               <ActivityIndicator size='small' color='#FFF' />
             ) : (

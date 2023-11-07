@@ -35,6 +35,7 @@ const Signin = () => {
     if (!mainPass.trim() || !email.trim()) {
       setError({error: true, message: 'Please fill all blanks!'});
     } else {
+      setIsLoading(true)
       signInWithEmailAndPassword(auth, email, mainPass)
         .then( async (userCreds) => {
           const user = auth.currentUser
@@ -47,7 +48,7 @@ const Signin = () => {
           }
         })
         .catch((err) => {
-          console.log(err)
+          // console.log(err)
           switch (err.code) {
             case AuthErrorCodes.INVALID_EMAIL:
               setError({ error: true, message: "Invalid email address!"})
@@ -58,6 +59,7 @@ const Signin = () => {
             default: 
               setError({ error: true, message: "Something went wrong!"})
           }
+          setIsLoading(false)
         })
     }
   }
@@ -113,13 +115,10 @@ const Signin = () => {
         {error.error ? <Text style={{ marginBottom: 40, paddingLeft: 15, color: 'red' }}>{error.message}</Text> : null}
 
         <TouchableOpacity
-          onPress={() => {
-            setIsLoading(true)
-            handleSignin()
-          }}
+          onPress={() => handleSignin()}
           disabled={isLoading}
         >
-          <View style={styles({}).formBtn}>
+          <View style={styles({btnPadding: isLoading ? 13 : 20}).formBtn}>
             {
               isLoading ? (
                 <ActivityIndicator size='large' color='#FFF' />
@@ -137,6 +136,11 @@ const Signin = () => {
               )
             }
           </View>
+          {/* <View style={[styles({btnPadding: 15}).formBtn, {marginTop: 10}]}>
+            <View>
+          <ActivityIndicator size='large' color='#FFF' />
+            </View>
+          </View> */}
         </TouchableOpacity>
       </View>
 
