@@ -9,6 +9,7 @@ import {
 } from "@expo-google-fonts/averia-serif-libre"; 
 import { onboardingSlideStyles as styles } from "../../styles/styles";
 
+
 interface SlideProps {
   title: string;
   description: string;
@@ -47,12 +48,14 @@ const OnboardingSlide = ( props: SlideProps ) => {
   const navigation = useNavigation();
 
   return (
-    <SafeAreaView style={styles({ bgColor, flexDir }).container}>
+    <SafeAreaView style={styles({ flexDir }).container}>
       {final ? (
-        <TouchableOpacity onPress={() => navigation.navigate("Home" as never)} style={styles({}).nextButton}>
-          <Text style={styles({font: 'AveriaSerifLibre_300Light'}).nextButtonText}>Next</Text>
+        <TouchableOpacity onPress={() => navigation.navigate("OnboardingChat" as never)} style={styles({}).nextButton}>
+          <Text style={[styles({}).nextButtonText, {
+            fontFamily: 'AveriaSerifLibre_300Light'
+          }]}>Next</Text>
         </TouchableOpacity>
-      ) : null}
+      ) : null} 
 
       <View style={styles({ txtColor, flexDir, height }).textBox}>
         <Text
@@ -73,7 +76,7 @@ const OnboardingSlide = ( props: SlideProps ) => {
         </Text>
       </View>
 
-      <View style={styles({isImageFullWidth}).imageContainer}>
+      <View style={[styles({isImageFullWidth}).imageContainer]}>
         <Image source={image as never} style={styles({isImageFullWidth, imageWidth}).image} />
       </View>
     </SafeAreaView>

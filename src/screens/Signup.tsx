@@ -4,7 +4,8 @@ import {
   TextInput,
   TouchableOpacity,
   Image,
-  Dimensions
+  Dimensions,
+  ActivityIndicator
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useState } from "react";
@@ -26,6 +27,7 @@ const Signup = () => {
   const [isMainPassVisibile, setIsMainPassVisible] = useState(false);
   const [isRepeatPassVisibile, setIsRepeatPassVisible] = useState(false);
   const [error, setError] = useState({ error: false, message: '' });
+  const [isLoading, setIsLoading] = useState(false);
 
   const { width } = Dimensions.get("window")
   const navigation = useNavigation();
@@ -44,11 +46,11 @@ const Signup = () => {
         })
         .catch(err => {
           console.log(err.code)
-          switch(err.code) {
+          switch (err.code) {
             case AuthErrorCodes.EMAIL_EXISTS:
-              setError({ error: true, message: "Email already exists!"})
+              setError({ error: true, message: "Email already exists!" })
             case AuthErrorCodes.INVALID_EMAIL:
-              setError({ error: true, message: "Invalid email address!"})
+              setError({ error: true, message: "Invalid email address!" })
             default:
               navigation.navigate("Failure" as never)
           }
@@ -132,19 +134,27 @@ const Signup = () => {
         {error.error ? <Text style={{ marginBottom: 40, paddingLeft: 15, color: 'red' }}>{error.message}</Text> : null}
 
         <TouchableOpacity
-          onPress={handleSignup}
+          onPress={() => {
+            setIsLoading(true)
+            handleSignup()
+          }}
+          disabled={isLoading}
         >
           <View style={styles({}).formBtn}>
-            <Text
-              style={[
-                styles({}).formBtnTxt,
-                {
-                  fontFamily: "AveriaSerifLibre_400Regular",
-                },
-              ]}
-            >
-              Get Started
-            </Text>
+            {isLoading ? (
+              <ActivityIndicator size='small' color='#FFF' />
+            ) : (
+              <Text
+                style={[
+                  styles({}).formBtnTxt,
+                  {
+                    fontFamily: "AveriaSerifLibre_400Regular",
+                  },
+                ]}
+              >
+                Get Started
+              </Text>
+            )}
           </View>
         </TouchableOpacity>
       </View>

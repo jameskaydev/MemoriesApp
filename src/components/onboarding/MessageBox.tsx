@@ -26,8 +26,8 @@ const MessageBox = ({
   // useFonts({ AveriaSerifLibre_400Regular });
   return (
     <View style={styles.messageBoxContainer}>
-      {/* {sender === "assistant" ? (
-        <> */}
+      {sender === "assistant" ? (
+        <>
           <LogoMain width="40" height="37" />
           <Text
             style={[
@@ -40,7 +40,7 @@ const MessageBox = ({
           >
             {fmessage ? message : <LoadingDots />}
           </Text>
-        {/* </>
+        </>
       ) : (
         <Text
           style={[
@@ -53,7 +53,7 @@ const MessageBox = ({
         >
           {fmessage ? message : <LoadingDots />}
         </Text>
-      )} */}
+      )}
     </View>
   );
 };
