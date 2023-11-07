@@ -7,7 +7,8 @@ export const onboardingList = [
     bgColor: '#E9AF00',
     txtColor: '#000000',
     flexDir: 'column',
-    imageWidth: 0.9
+    imageWidth: 0.9,
+    index: 0
   }, 
   {
     title: 'You choose\nor we Nudge',
@@ -17,7 +18,8 @@ export const onboardingList = [
     bgColor: '#036BBF',
     txtColor: '#ffffff',
     flexDir: 'column-reverse',
-    height: 0.5
+    height: 0.5,
+    index: 1
   },
   {
     title: 'Capture or\njust talk',
@@ -27,7 +29,8 @@ export const onboardingList = [
     bgColor: '#6EAC3D',
     txtColor: '#ffffff',
     flexDir: 'column',
-    imageWidth: 0.8
+    imageWidth: 0.8,
+    index: 2
   },
   {
     title: 'Relive your\nmemory',
@@ -37,7 +40,8 @@ export const onboardingList = [
     bgColor: '#EC8002',
     txtColor: '#ffffff',
     flexDir: 'column',
-    isImageFullWidth: true
+    isImageFullWidth: true,
+    index: 3
   },
   {
     title: "Get's better\nwith sharing",
@@ -50,5 +54,6 @@ export const onboardingList = [
     isImageFullWidth: true,
     imageWidth: 0.9,
     final: true,
+    index: 4
   },
 ] 

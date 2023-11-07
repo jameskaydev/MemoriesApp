@@ -34,12 +34,12 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      {/* <Stack.Navigator screenOptions={{
+      <Stack.Navigator screenOptions={{
         headerShown: false
       }}>
         <Stack.Screen name="Onboarding" component={Onboarding} />
-      </Stack.Navigator> */}
-      <HomeStack />
+      </Stack.Navigator>
+      {/* <HomeStack /> */}
 
       {/* <AuthStack /> */}
     </NavigationContainer>

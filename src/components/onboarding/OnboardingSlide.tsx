@@ -1,14 +1,14 @@
-import { Text, View, Image, TouchableOpacity, Animated, Dimensions } from "react-native";
+import {
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  Animated,
+  Easing,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
-import {
-  AveriaSerifLibre_700Bold,
-  AveriaSerifLibre_400Regular,
-  AveriaSerifLibre_300Light,
-  useFonts,
-} from "@expo-google-fonts/averia-serif-libre"; 
 import { onboardingSlideStyles as styles } from "../../styles/styles";
-
 
 interface SlideProps {
   title: string;
@@ -22,9 +22,13 @@ interface SlideProps {
   height?: number;
   imageWidth?: number;
   isImageFullWidth?: boolean;
+  currentIndex: number;
+  slideInAnimation: Animated.Value;
+  slideOutAnimation: Animated.Value;
+  index: number;
 }
 
-const OnboardingSlide = ( props: SlideProps ) => {
+const OnboardingSlide = (props: SlideProps) => {
   const {
     title,
     description,
@@ -37,48 +41,92 @@ const OnboardingSlide = ( props: SlideProps ) => {
     height,
     imageWidth,
     isImageFullWidth,
-  } = props
+    currentIndex,
+    slideInAnimation,
+    slideOutAnimation,
+    index,
+  } = props;
 
-  useFonts({
-    AveriaSerifLibre_700Bold,
-    AveriaSerifLibre_400Regular,
-    AveriaSerifLibre_300Light
-  });
+  const slideInStyle = {
+    transform: [
+      {
+        translateX: slideInAnimation.interpolate({
+          inputRange: [currentIndex - 1, currentIndex, currentIndex + 1],
+          outputRange: [500, 0, -500],
+        }),
+      },
+    ],
+  };
+
+  const slideOutStyle = {
+    transform: [
+      {
+        translateX: slideOutAnimation.interpolate({
+          inputRange: [currentIndex - 1, currentIndex, currentIndex + 1],
+          outputRange: [0, 100, -100],
+        }),
+      },
+    ],
+  };
 
   const navigation = useNavigation();
 
   return (
     <SafeAreaView style={styles({ flexDir }).container}>
-      {final ? (
-        <TouchableOpacity onPress={() => navigation.navigate("OnboardingChat" as never)} style={styles({}).nextButton}>
-          <Text style={[styles({}).nextButtonText, {
-            fontFamily: 'AveriaSerifLibre_300Light'
-          }]}>Next</Text>
-        </TouchableOpacity>
-      ) : null} 
+      {currentIndex === index && (
+        <>
+          {final ? (
+            <TouchableOpacity
+              onPress={() => navigation.navigate("OnboardingChat" as never)}
+              style={styles({}).nextButton}
+            >
+              <Text
+                style={[
+                  styles({}).nextButtonText,
+                  {
+                    fontFamily: "AveriaSerifLibre_300Light",
+                  },
+                ]}
+              >
+                Next
+              </Text>
+            </TouchableOpacity>
+          ) : null}
 
-      <View style={styles({ txtColor, flexDir, height }).textBox}>
-        <Text
-          style={[
-            styles({ txtColor, dir }).title,
-            { fontFamily: "AveriaSerifLibre_700Bold" },
-          ]}
-        >
-          {title}
-        </Text>
-        <Text
-          style={[
-            styles({ txtColor, dir }).description,
-            { fontFamily: "AveriaSerifLibre_400Regular" },
-          ]}
-        >
-          {description}
-        </Text>
-      </View>
+          <Animated.View
+            style={[
+              styles({ txtColor, flexDir, height }).textBox,
+              slideInStyle,
+            ]}
+          >
+            <Text
+              style={[
+                styles({ txtColor, dir }).title,
+                { fontFamily: "AveriaSerifLibre_700Bold" },
+              ]}
+            >
+              {title}
+            </Text>
+            <Text
+              style={[
+                styles({ txtColor, dir }).description,
+                { fontFamily: "AveriaSerifLibre_400Regular" },
+              ]}
+            >
+              {description}
+            </Text>
+          </Animated.View>
 
-      <View style={[styles({isImageFullWidth}).imageContainer]}>
-        <Image source={image as never} style={styles({isImageFullWidth, imageWidth}).image} />
-      </View>
+          <Animated.View
+            style={[styles({ isImageFullWidth }).imageContainer, slideOutStyle]}
+          >
+            <Image
+              source={image as never}
+              style={styles({ isImageFullWidth, imageWidth }).image}
+            />
+          </Animated.View>
+        </>
+      )}
     </SafeAreaView>
   );
 };
