@@ -9,6 +9,8 @@ const greenBorder = {
   borderWidth: 4,
   borderColor: 'green'
 }
+
+
 // Onboarding Slide
 interface OnboardingSlide {
   txtColor?: string;
@@ -20,6 +22,14 @@ interface OnboardingSlide {
   imageWidth?: number;
   isImageFullWidth?: boolean;
 }
+
+export const homeStyles = () => StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: "column",
+    justifyContent: "space-between",
+  }
+})
 
 export const onboardingSlideStyles = (props: OnboardingSlide) => StyleSheet.create({
   container: {
@@ -180,17 +190,33 @@ export const AuthStyles = () => StyleSheet.create({
   enteranceTitle: {
     fontSize: 88,
     lineHeight: 70,
-    // ...greenBorder
+    fontFamily: "AveriaSerifLibre_700Bold"
   },
   enteranceTitleContainer: {
     paddingTop: 94,
     paddingLeft: 15,
-    // ...redBorder
   },
   enteranceDesc: {
     fontSize: 20,
     lineHeight: 24,
-    marginTop: 40
+    marginTop: 40,
+    fontFamily: "AveriaSerifLibre_400Regular"
+  },
+  enteranceBtnContainer: {
+    flexDirection: "row", 
+    marginRight: 15,
+    marginTop: 30
+  },
+  enteranceFooterTxt: {
+    fontSize: 20,
+    fontFamily: "AveriaSerifLibre_400Regular",
+    marginBottom: 10,
+    textAlign: "center",
+  },
+  enteranceFooterImage: {
+    width: width,
+    position: "absolute",
+    bottom: 0,
   }
 })
 
@@ -237,7 +263,7 @@ export const SignupStyles = ({ margin, error, isBlank, isPass, btnPadding }: Sig
     paddingBottom: 3,
     paddingLeft: 12,
     fontSize: 20,
-    marginBottom: margin
+    marginBottom: margin 
   },
   passContainer: {
     position: 'relative'
@@ -255,4 +281,12 @@ export const SignupStyles = ({ margin, error, isBlank, isPass, btnPadding }: Sig
     color: "#FFF",
     fontSize: 20,
   },
+})
+
+// Onboarding Chat
+export const onboardingChatStyles = () => StyleSheet.create({
+  container: {
+    height: "100%",
+    paddingBottom: 150,
+  }
 })

@@ -1,8 +1,8 @@
 import Svg, { Path, Defs, ClipPath } from "react-native-svg";
 
 interface LogoMainProps {
-  width: string;
-  height: string;
+  width: number;
+  height: number;
 }
 
 const LogoMain = ({ width, height }: LogoMainProps ) => {

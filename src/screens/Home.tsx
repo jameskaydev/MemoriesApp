@@ -1,14 +1,16 @@
-import { SafeAreaView } from 'react-native-safe-area-context'
-import HomeMemories from '../components/HomeMemories';
-import HomeStartBox from '../components/HomeStartBox';
+import { SafeAreaView } from "react-native-safe-area-context";
+import { homeStyles as styles } from "../styles/styles";
+
+import HomeMemories from "../components/HomeMemories";
+import HomeStartBox from "../components/HomeStartBox";
 
 const Home = () => {
   return (
-    <SafeAreaView style={{flex: 1, flexDirection: 'column', justifyContent: 'space-between'}}>
+    <SafeAreaView style={styles().container}>
       <HomeMemories />
       <HomeStartBox />
     </SafeAreaView>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;

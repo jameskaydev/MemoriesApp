@@ -2,59 +2,57 @@ import {
   View,
   Text,
   Image,
-  Dimensions,
   TouchableOpacity,
   Platform,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-// import signInWithFB from "../utils/signinWithFacebook";
-
 import { AuthStyles as styles } from "../styles/styles";
+import { useNavigation } from "@react-navigation/core";
 
 // Components
 import SvgButton from "../components/SvgButton";
 import LogoMain from "../components/svg/LogoMain";
 import Button from "../components/Button";
 import LinkButton from "../components/LinkButton";
-import { useNavigation } from "@react-navigation/core";
+
+// utils
+import { vScale, mScale, hScale } from "../utils/scale";
 
 const Enterance = () => {
-  const { width } = Dimensions.get("window");
-
   const navigation = useNavigation();
+
   return (
     <SafeAreaView style={{ height: "100%" }}>
       <View style={styles().enteranceTitleContainer}>
+
         <Text
-          style={[
-            styles().enteranceTitle,
-            { fontFamily: "AveriaSerifLibre_700Bold" },
-          ]}
+          style={styles().enteranceTitle}
         >
-          Make{"\n"}Each <LogoMain width="65" height="60" />
-          {"\n"}Moment{"\n"}Count.
+          Make{"\n"}
+          Each <LogoMain width={hScale(65)} height={vScale(60)} /> {"\n"}
+          Moment{"\n"}
+          Count.
         </Text>
 
         <Text
-          style={[
-            styles().enteranceDesc,
-            { fontFamily: "AveriaSerifLibre_400Regular" },
-          ]}
+          style={styles().enteranceDesc}
         >
-          Capture it All,
-          {"\n"}Miss Nothing ,{"\n"}The Moments That Make You,
-          {"\n"}You
+          Capture it All,{"\n"}
+          Miss Nothing ,{"\n"}
+          The Moments That Make You,{"\n"}
+          You
         </Text>
 
-        <View style={{ flexDirection: "row", marginRight: 15, marginTop: 30 }}>
+        <View style={styles().enteranceBtnContainer}>
+
           {Platform.OS === "ios" && (
             <TouchableOpacity>
-              <SvgButton company="apple" width={60} height={60} />
+              <SvgButton company="apple" width={mScale(60)} height={mScale(60)} />
             </TouchableOpacity>
           )}
 
           <TouchableOpacity>
-            <SvgButton company="google" width={60} height={60} />
+            <SvgButton company="google" width={mScale(60)} height={mScale(60)} />
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -62,7 +60,7 @@ const Enterance = () => {
               // signInWithFB()
             }}
           >
-            <SvgButton company="facebook" width={60} height={60} />
+            <SvgButton company="facebook" width={mScale(60)} height={mScale(60)} />
           </TouchableOpacity>
 
           <Button
@@ -70,33 +68,28 @@ const Enterance = () => {
             onpress={() => navigation.navigate("Signup" as never)}
             navigation={navigation}
           />
+
         </View>
 
-        <View style={{ marginTop: 40 }}>
-          <Text
-            style={{
-              fontFamily: "AveriaSerifLibre_400Regular",
-              fontSize: 20,
-              textAlign: "center",
-              marginBottom: 10,
-            }}
-          >
+        <View style={{ marginTop: vScale(40) }}>
+
+          <Text style={styles().enteranceFooterTxt}>
             Do you already have an account?
           </Text>
           <LinkButton
             text="Sign In"
             onpress={() => navigation.navigate("Signin" as never)}
           />
+
         </View>
+
       </View>
+
       <Image
         source={require("../../assets/images/bottom_colos.png")}
-        style={{
-          width: width,
-          position: "absolute",
-          bottom: 0,
-        }}
+        style={styles().enteranceFooterImage}
       />
+
     </SafeAreaView>
   );
 };

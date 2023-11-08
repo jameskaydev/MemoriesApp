@@ -1,87 +1,93 @@
-import { View, Text, Platform, TouchableOpacity, StyleSheet } from 'react-native'
-import { useState } from 'react'
-import DateTimePicker from '@react-native-community/datetimepicker';
+import {
+  View,
+  Text,
+  Platform,
+  TouchableOpacity,
+  StyleSheet,
+  Touchable,
+} from "react-native";
+import { useState } from "react";
+import DateTimePicker from "@react-native-community/datetimepicker";
 
 interface DatepickerProps {
   type: string;
-  sendEventHandler: (property: string, value: string) => void
+  sendEventHandler: (property: string, value: string) => void;
 }
 
-const Datepicker = ({type, sendEventHandler}: DatepickerProps) => {
+const Datepicker = ({ type, sendEventHandler }: DatepickerProps) => {
   const [date, setDate] = useState(new Date());
   const [showPicker, setShowPicker] = useState(false);
-  const [showi, setShowi] = useState('');
+  const [showi, setShowi] = useState("");
 
   const toggleShowPicker = () => {
     setShowPicker(!showPicker);
-  }
+  };
 
   const onDateChange = ({ type }: { type: string }, selectedDate: Date) => {
-    if (type === 'set') {
-      setDate(selectedDate)
-      setShowi(selectedDate.toDateString())
-      toggleShowPicker()
+    if (type === "set") {
+      setDate(selectedDate);
+      setShowi(selectedDate.toDateString());
+      toggleShowPicker();
     } else {
-      toggleShowPicker()
+      toggleShowPicker();
     }
-  }
+  };
 
-  if (Platform.OS === 'android') {
+  if (Platform.OS === "android") {
     return (
-      <View style={{
-        borderWidth: 2,
-        borderColor: 'red',
-        height: '100%'
-      }}>
-        <Text>
-          {showi}
-        </Text>
+      <View
+        style={{
+          borderWidth: 2,
+          borderColor: "red",
+          height: "100%",
+        }}
+      >
+        <Text>{showi}</Text>
+        <TouchableOpacity onPress={() => toggleShowPicker()}>
+          <Text>CHANGE</Text>
+        </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => toggleShowPicker()}
+          onPress={() => {
+            sendEventHandler(type, date.toDateString());
+          }}
         >
-          <Text>
-            CHANGE
-          </Text>
+          <Text>Done</Text>
         </TouchableOpacity>
         {showPicker && (
           <DateTimePicker
-            mode='date'
-            display='spinner'
+            mode="date"
+            display="spinner"
             value={date}
             onChange={onDateChange as any}
           />
         )}
       </View>
-    )
+    );
   }
 
-  if (Platform.OS === 'ios') {
+  if (Platform.OS === "ios") {
     return (
       <View style={styles.iosDatepickerContainer}>
         <DateTimePicker
-          mode='date'
-          display='spinner'
+          mode="date"
+          display="spinner"
           value={date}
           onChange={onDateChange as any}
           style={styles.iosDatepicker}
         />
         <TouchableOpacity
-        style={styles.datepickerBtn}
-        onPress={() => {
-          sendEventHandler(type, date.toDateString())
-        }}
+          style={styles.datepickerBtn}
+          onPress={() => {
+            sendEventHandler(type, date.toDateString());
+          }}
         >
-          <Text
-          style={styles.datepickerBtnTxt}
-          >
-            Done
-          </Text>
+          <Text style={styles.datepickerBtnTxt}>Done</Text>
           {/* <Text></Text> */}
         </TouchableOpacity>
       </View>
-    )
+    );
   }
-}
+};
 
 const styles = StyleSheet.create({
   iosDatepickerContainer: {
@@ -92,25 +98,25 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     paddingBottom: 10,
     paddingTop: 20,
-    marginBottom: 20
+    marginBottom: 20,
   },
   iosDatepicker: {
     height: 100,
-    fontFamily: 'AveriaSerifLibre_400Regular'
+    fontFamily: "AveriaSerifLibre_400Regular",
   },
   datepickerBtn: {
     width: "100%",
-    backgroundColor: '#252525',
+    backgroundColor: "#252525",
     paddingVertical: 10,
     borderRadius: 30,
     // marginHorizontal: 15
   },
   datepickerBtnTxt: {
     fontSize: 20,
-    fontFamily: 'AveriaSerifLibre_400Regular',
-    textAlign: 'center',
-    color: '#fff'
-  }
-})
+    fontFamily: "AveriaSerifLibre_400Regular",
+    textAlign: "center",
+    color: "#fff",
+  },
+});
 
-export default Datepicker
+export default Datepicker;

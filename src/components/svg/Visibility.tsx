@@ -1,5 +1,4 @@
-import Svg, { Path, Defs, ClipPath, Rect } from "react-native-svg";
-import { TouchableOpacity } from "react-native";
+import Svg, { Path } from "react-native-svg";
 
 interface AppleLogoProps {
   width: number;

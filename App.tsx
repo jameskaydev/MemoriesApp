@@ -1,8 +1,6 @@
-import { useCallback } from "react";
 import { StyleSheet } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { useFonts, AveriaSerifLibre_400Regular, AveriaSerifLibre_700Bold, AveriaSerifLibre_300Light } from "@expo-google-fonts/averia-serif-libre";
-import * as SplashScreen from "expo-splash-screen";
 import "react-native-gesture-handler"
 
 //Stacks
@@ -25,12 +23,6 @@ export default function App() {
   if (!fontsLoaded) {
     return <AppLoading />
   }
-
-  // const onLayoutRootView = useCallback(async () => {
-    // if (fontsLoaded) {
-      // SplashScreen.hideAsync()
-    // }
-  // }, [fontsLoaded])
 
   return (
     <NavigationContainer>

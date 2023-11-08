@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   View,
   Text,
@@ -8,18 +9,18 @@ import {
   ActivityIndicator
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useState } from "react";
-
+import { SignupStyles as styles } from "../styles/styles"; //styles
 import { useNavigation } from "@react-navigation/core";
-import { SignupStyles as styles } from "../styles/styles";
+
 import { AuthErrorCodes, signInWithEmailAndPassword } from "firebase/auth";
-import { auth, db } from "../../firebaseConfig";
 import { doc, getDoc } from 'firebase/firestore';
+import { auth, db } from "../../firebaseConfig";
 
 // Components
 import LinkButton from "../components/LinkButton";
 import LogoMain from "../components/svg/LogoMain";
 import Visibility from "../components/svg/Visibility";
+import Invisibility from "../components/svg/Invisibility";
 
 const Signin = () => {
   const [email, setEmail] = useState("");
@@ -37,7 +38,7 @@ const Signin = () => {
     } else {
       setIsLoading(true)
       signInWithEmailAndPassword(auth, email, mainPass)
-        .then( async (userCreds) => {
+        .then( async () => {
           const user = auth.currentUser
           const docRef = doc(db, "users", user?.uid as never);
           const docc = await getDoc(docRef);
@@ -48,7 +49,6 @@ const Signin = () => {
           }
         })
         .catch((err) => {
-          // console.log(err)
           switch (err.code) {
             case AuthErrorCodes.INVALID_EMAIL:
               setError({ error: true, message: "Invalid email address!"})
@@ -124,23 +124,13 @@ const Signin = () => {
                 <ActivityIndicator size='large' color='#FFF' />
               ) : (
                 <Text
-                style={[
-                  styles({}).formBtnTxt,
-                  {
-                    fontFamily: "AveriaSerifLibre_400Regular",
-                  },
-                ]}
+                style={styles({}).formBtnTxt}
                 >
               Get Started
             </Text>
               )
             }
           </View>
-          {/* <View style={[styles({btnPadding: 15}).formBtn, {marginTop: 10}]}>
-            <View>
-          <ActivityIndicator size='large' color='#FFF' />
-            </View>
-          </View> */}
         </TouchableOpacity>
       </View>
 

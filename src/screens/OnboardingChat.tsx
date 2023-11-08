@@ -1,15 +1,21 @@
-import { db, auth } from "../../firebaseConfig";
-import { doc, getDoc, collection, setDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
+import { db, auth } from "../../firebaseConfig";
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import { useNavigation } from "@react-navigation/core";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { onboardingChatStyles as styles } from "../styles/styles"; // styles
+
+// Components
 import ChatMessages from "../components/ChatMessages";
 import UserInput from "../components/onboarding/UserInput";
+import Datepicker from "../components/onboarding/Datepicker";
+
+// utils
 import parseJsonArray from "../utils/parseArrayofJson";
 import dividePrompts from "../utils/dividePrompts";
-import Datepicker from "../components/onboarding/Datepicker";
-import { useNavigation } from "@react-navigation/core";
 
-interface ArrayProps {
+// interfaces
+interface Message {
   hidden?: boolean;
   id?: string;
   message: string;
@@ -27,22 +33,24 @@ interface UserDataProps {
 }
 
 const OnboardingChat = () => {
-  const [data, setData] = useState<ArrayProps[][]>([]);
-  const [dividedData, setDividedData] = useState<ArrayProps[][]>([]);
+  const [data, setData] = useState<Message[][]>([]);
+  const [dividedData, setDividedData] = useState<Message[][]>([]);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
-  const [currentData, setCurrentData] = useState<ArrayProps[]>([]);
-  const [mainMessages, setMainMessages] = useState<ArrayProps[]>([])
+  const [currentData, setCurrentData] = useState<Message[]>([]);
+  const [mainMessages, setMainMessages] = useState<Message[]>([]);
   const [userData, setUserData] = useState<UserDataProps>({
-    name: '',
-    nick_name: '',
-    dob: '',
+    name: "",
+    nick_name: "",
+    dob: "",
     is_onboarding_complete: false,
-    pronouns: ''
+    pronouns: "",
   });
 
-  const updateUserData = ( property: string, value: string ) => {
+  const navigation = useNavigation();
+
+  const updateUserData = (property: string, value: string) => {
     const updatedUserData = { ...userData };
-    switch ( property ) {
+    switch (property) {
       case "name":
         updatedUserData.name = value;
       case "nick_name":
@@ -56,7 +64,7 @@ const OnboardingChat = () => {
     }
 
     setUserData(updatedUserData);
-  }
+  };
 
   useEffect(() => {
     const getPrompts = async () => {
@@ -69,7 +77,7 @@ const OnboardingChat = () => {
         setDividedData(divided);
         setData([divided[0]]);
         setCurrentData([...(divided[0] as any)]);
-        setMainMessages(divided[0].reverse())
+        setMainMessages(divided[0].reverse());
         setCurrentIndex(currentIndex + 1);
       } else {
         console.log("no such a doc exists");
@@ -84,84 +92,78 @@ const OnboardingChat = () => {
     setCurrentData([...dividedData[currentIndex as any]]);
     setCurrentIndex(currentIndex + 1);
   };
-  
-  const navigation = useNavigation()
 
   const handleAddDoc = () => {
     const userid = auth.currentUser?.uid;
-    // const collectionRef = collection(db, 'users'); 
-    const docRef = doc(db, 'users', userid as never)
-    setDoc(docRef, userData).then(() => {
-      navigation.navigate('Home' as never);
-    }).catch(e => {
-      console.log(e)
-    })
-  }
-  
-  const sendEventHandler = ( property: string, value: string) => {
-    if ( property !== 'links' ) {
-      updateUserData( property, value )
-      manageFlows()
-      setTimeout(() => {
+    const docRef = doc(db, "users", userid as never);
+    setDoc(docRef, userData)
+      .then(() => {
+        navigation.navigate("Home" as never);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
 
-        setMainMessages([
-          ...dividedData[currentIndex].reverse(), 
-          {message: value, sender: 'user'}, 
-          ...mainMessages, 
-        ])
-      }, 1000)
+  const sendEventHandler = (property: string, value: string) => {
+    if (property !== "links") {
+      updateUserData(property, value);
+      manageFlows();
+      setMainMessages([{ message: value, sender: "user" }, ...mainMessages]);
+      setMainMessages([
+        ...dividedData[currentIndex].reverse(), 
+        { message: value, sender: "user" },
+        ...mainMessages
+      ]);
     } else {
-        handleAddDoc()
+      handleAddDoc();
     }
-    // console.log(mainMessages)
-  }
+  };
 
   const inputGenerator = () => {
-    switch ( currentData[(currentData.length - 1) as any].type ) {
+    switch (currentData[(currentData.length - 1) as any].type) {
       case "INPUT":
-        return <UserInput 
-        input={true} 
-        sendEventHandler={sendEventHandler} 
-        type="name"
-        />
+        return (
+          <UserInput
+            input={true}
+            sendEventHandler={sendEventHandler}
+            type="name"
+          />
+        );
       case "INPUT_OPTIONS":
-        return <UserInput
-        options={["name1", "name2", "name3", "name4"]} 
-        input={true}
-        sendEventHandler={sendEventHandler} 
-        type="nick_name"
-        />
-        case "DATE_PICKER":
-          return <Datepicker 
-            sendEventHandler={sendEventHandler} 
-            type="dob"
-        />
+        return (
+          <UserInput
+            options={["name1", "name2", "name3", "name4"]}
+            input={true}
+            sendEventHandler={sendEventHandler}
+            type="nick_name"
+          />
+        );
+      case "DATE_PICKER":
+        return <Datepicker sendEventHandler={sendEventHandler} type="dob" />;
       case "PRONOUNCE_OPTIONS":
-        return <UserInput 
-        options={['he/him', 'she/her', 'they/them']}
-        sendEventHandler={sendEventHandler}
-        type="pronouns"
-        />
+        return (
+          <UserInput
+            options={["he/him", "she/her", "they/them"]}
+            sendEventHandler={sendEventHandler}
+            type="pronouns"
+          />
+        );
       case "FINAL_OPTIONS":
-        return <UserInput 
-          options={["Yes! Let's Go", "Take me to home"]}
-          sendEventHandler={sendEventHandler}
-          type="links"
-        />
+        return (
+          <UserInput
+            options={["Yes! Let's Go", "Take me to home"]}
+            sendEventHandler={sendEventHandler}
+            type="links"
+          />
+        );
     }
-  }
-
+  };
 
   return (
-    <SafeAreaView
-      style={{
-        height: "100%",
-        paddingBottom: 150,
-      }}
-    >
+    <SafeAreaView style={styles().container}>
       <ChatMessages messages={mainMessages as any} />
-      {currentData[(currentData.length - 1) as any]
-        ? inputGenerator() : null}
+      {currentData[(currentData.length - 1) as any] ? inputGenerator() : null}
     </SafeAreaView>
   );
 };
