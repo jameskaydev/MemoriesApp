@@ -25,8 +25,61 @@ import LinkButton from "../components/LinkButton";
 // utils
 import { vScale, mScale, hScale } from "../utils/scale";
 
+import * as WebBrowser from 'expo-web-browser';
+import { makeRedirectUri, useAuthRequest, ResponseType } from 'expo-auth-session';
+import { FacebookAuthProvider } from "firebase/auth";
+
+WebBrowser.maybeCompleteAuthSession();
+const discovery = {
+  authorizationEndpoint: 'https://www.facebook.com/v13.0/dialog/oauth',
+  tokenEndpoint: 'https://graph.facebook.com/v13.0/oauth/access_token',
+  revocationEndpoint: 'https://graph.facebook.com/v13.0/me/permissions',
+};
+
 const Enterance = () => {
   const navigation = useNavigation();
+
+  // Facebook Auth
+  const [request, response, promptAsync] = useAuthRequest(
+    {
+      clientId: '1061944271657858',
+      scopes: ['public_profile', 'email'],
+      // For usage in managed apps using the proxy
+      redirectUri: makeRedirectUri({
+        // For usage in bare and standalone
+        native: 'fb1061944271657858://authorize',
+        // useProxy: Platform.select({ web: false, default: true }),
+      }),
+      responseType: ResponseType.Token,
+    },
+    discovery
+  );
+
+  useEffect(() => {
+    if (response?.type === 'success') {
+      const { access_token } = response.params;
+  
+      const credential = FacebookAuthProvider.credential(access_token);
+  
+      signInWithCredential(auth, credential)
+        .then((userCredential) => {
+          // Signed in
+          var user = userCredential.user;
+          // ...
+        })
+        .catch((error) => {
+          // Handle Errors here.
+          var errorCode = error.code;
+          var errorMessage = error.message;
+          // The email of the user's account used.
+          var email = error.email;
+          // The firebase.auth.AuthCredential type that was used.
+          var credential = error.credential;
+          // ...
+        });
+    }
+  }, [response]);
+  // End of Facebook Auth
 
   // Google Auth
   const [, googleResponse, promptAsyncGoogle] = useGoogleIdTokenAuthRequest({
@@ -150,7 +203,7 @@ const Enterance = () => {
 
           <TouchableOpacity
             onPress={() => {
-              // signInWithFB()
+              promptAsync()
             }}
           >
             <SvgButton company="facebook" width={mScale(60)} height={mScale(60)} />
