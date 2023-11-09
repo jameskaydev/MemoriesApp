@@ -26,9 +26,10 @@
     },
     "extra": {
       "eas": {
-        "projectId": "0cbdc869-d004-4095-acb9-afe21321a3a0"
+        "projectId": "6e76ce56-3eaf-489c-8b55-357014f52b6c"
       }
     },
-    "plugins": []
+    "plugins": [],
+    "owner": "jameskaydev"
   }
 }
