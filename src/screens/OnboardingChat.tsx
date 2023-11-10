@@ -10,7 +10,7 @@ import ChatMessages from "../components/ChatMessages";
 import UserInput from "../components/onboarding/UserInput";
 import Datepicker from "../components/onboarding/Datepicker";
 
-// utils
+// utils 
 import parseJsonArray from "../utils/parseArrayofJson";
 import dividePrompts from "../utils/dividePrompts";
 import { KeyboardAvoidingView, Image } from "react-native";
@@ -141,7 +141,7 @@ const OnboardingChat = () => {
       case "INPUT_OPTIONS":
         return (
           <UserInput
-            options={["name1", "name2", "name3", "name4"]}
+            options={[`${userData.name} 1`, `${userData.name} 2`, `${userData.name} 3`]}
             input={true}
             sendEventHandler={sendEventHandler}
             type="nick_name"
@@ -178,7 +178,7 @@ const OnboardingChat = () => {
           colors={["#FFFFFF", "#FFFFFFD8", "#FFFFFF00"]}
           start={{ x: 0.5, y: 0 }}
           end={{ x: 0.5, y: 0.6 }}
-        ></LinearGradient>
+        />
       </KeyboardAvoidingView>
     </SafeAreaView>
   );

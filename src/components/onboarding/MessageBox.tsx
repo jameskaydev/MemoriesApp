@@ -28,7 +28,7 @@ const MessageBox = ({
     <View style={styles.messageBoxContainer}>
       {sender === "assistant" ? (
         <>
-          <LogoMain width="40" height="37" />
+          <LogoMain width={40} height={37} />
           <Text
             style={[
               styles.botMessage,

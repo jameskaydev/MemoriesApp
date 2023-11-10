@@ -21,7 +21,7 @@ const ChatMessages = ({ messages }: any) => {
       style={{
         flexDirection: "column",
         height: "100%",
-        paddingBottom: 160
+        paddingBottom: 160 
       }}
     >
       <FlatList
