@@ -5,18 +5,15 @@ interface Props {
   message: string;
   sender: string;
   type: string;
+  index?: number;
+  sent?: boolean;
 }
 
 function dividePrompts(originalArray: Props[]): Props[][] {
-  // console.log(originalArray)
   const dividedArray: Props[][] = [];
   let currentGroup: Props[] = [];
 
-  // console.log('--------------')
   originalArray.forEach(item => {
-    // console.log('*******')
-    // console.log(item?.action?.type ? 'HAS' : 'NHAS')
-    // console.log(item?.action?.type)
     if ( item?.type !== "CHAT" ) {
       currentGroup.push(item)
       dividedArray.push([...currentGroup])
@@ -24,6 +21,13 @@ function dividePrompts(originalArray: Props[]): Props[][] {
     } else {
       currentGroup.push(item)
     }
+  })
+
+  dividedArray.forEach(item => {
+    item.forEach((i, index) => {
+      i.sent = false;
+      i.index = index;
+    })
   })
 
   // console.log(dividedArray)

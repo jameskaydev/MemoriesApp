@@ -83,7 +83,7 @@ const LoadingDots = ({
   }, [reverse, animations]);
 
   return (
-    <Animated.View style={[styles.loading, { opacity }]}>
+    <Animated.View style={[styles.loading, { opacity, marginLeft: 15 }]}>
       {animations.map((animation, index) =>
         (
           <Animated.View

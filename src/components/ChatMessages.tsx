@@ -9,28 +9,39 @@ interface ArrayProps {
   message: string;
   sender: string;
   type?: string;
+  index?: number;
+  sent?: boolean;
 }
 
 interface MessagesProps {
+  setSentTrue: (index:number) => void;
   messages: ArrayProps[];
+  inverted: boolean;
 }
 
-const ChatMessages = ({ messages }: any) => {
+const ChatMessages = ({ messages, setSentTrue, inverted }: MessagesProps) => {  
   return (
     <View
       style={{
-        flexDirection: "column",
         height: "100%",
-        paddingBottom: 160 
+        paddingBottom: 160,
+        flexDirection: 'column-reverse'
       }}
     >
       <FlatList
-        data={messages}
+        data={messages.reverse()}
         keyExtractor={(_, index) => index.toString()}
-        inverted={true}
-        renderItem={({ item }) => {
+        inverted={inverted}
+        renderItem={({ item, index }) => {
             return (
-            <MessageBox message={item.message} sender={item.sender} />
+            <MessageBox 
+              message={item.message} 
+              sender={item.sender} 
+              index={item.index as any}
+              sent={item.sent as any}
+              mainIndex={index}
+              setSentTrue={setSentTrue}
+            />
           )
         }}
       />

@@ -4,7 +4,6 @@ import {
   Platform,
   TouchableOpacity,
   StyleSheet,
-  Touchable,
 } from "react-native";
 import { useState } from "react";
 import DateTimePicker from "@react-native-community/datetimepicker";
@@ -39,7 +38,7 @@ const Datepicker = ({ type, sendEventHandler }: DatepickerProps) => {
         style={{
           borderWidth: 2,
           borderColor: "red",
-          height: "100%",
+          height: "100%", 
         }}
       >
         <Text>{showi}</Text>
@@ -98,7 +97,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     paddingBottom: 10,
     paddingTop: 20,
-    marginBottom: 20,
+    position: "absolute",
+    bottom: 0,
   },
   iosDatepicker: {
     height: 100,

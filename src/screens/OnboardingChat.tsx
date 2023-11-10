@@ -23,6 +23,8 @@ interface Message {
   sender: string;
   type?: string;
   properties?: string[] | null;
+  sent?: boolean;
+  index?: number;
 }
 
 interface UserDataProps {
@@ -46,6 +48,7 @@ const OnboardingChat = () => {
     is_onboarding_complete: false,
     pronouns: "",
   });
+  const [inverted, setInverted] = useState(true);
 
   const navigation = useNavigation();
 
@@ -107,6 +110,11 @@ const OnboardingChat = () => {
   };
 
   const sendEventHandler = (property: string, value: string) => {
+    setInverted(false)
+    if ( property === 'name' ) {
+      const m = mainMessages.reverse();
+      setMainMessages(m);
+    }
     if (property !== "links") {
       updateUserData(property, value);
       manageFlows();
@@ -117,11 +125,14 @@ const OnboardingChat = () => {
           item.message = item.message.replace('{user.nick_name}', value)
         }
       })
-      setMainMessages([{ message: value, sender: "user" }, ...mainMessages]);
       setMainMessages([
-        ...dividedData[currentIndex].reverse(), 
-        { message: value, sender: "user" },
-        ...mainMessages
+        ...mainMessages,
+        { message: value, sender: "user", sent: true }, 
+      ]);
+      setMainMessages([
+        ...mainMessages,
+        { message: value, sender: "user", sent: true },
+        ...dividedData[currentIndex], 
       ]);
     } else {
       handleAddDoc();
@@ -168,10 +179,18 @@ const OnboardingChat = () => {
     }
   };
 
+  const setSentTrue = (index: number) => {
+    const newMainMessages = mainMessages;
+    newMainMessages[index].sent = true;
+  }
+
   return (
     <SafeAreaView style={styles().container}>
-      <KeyboardAvoidingView behavior="height">
-        <ChatMessages messages={mainMessages as any} />
+      <KeyboardAvoidingView behavior="height" style={{height: '100%'}}>
+        <ChatMessages messages={mainMessages as any}
+        setSentTrue={setSentTrue}
+        inverted={inverted}
+        />
         {currentData[(currentData.length - 1) as any] ? inputGenerator() : null}
         <LinearGradient
         style={styles().gradient}

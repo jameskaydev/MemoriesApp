@@ -288,7 +288,8 @@ export const SignupStyles = ({ margin, error, isBlank, isPass, btnPadding }: Sig
 export const onboardingChatStyles = () => StyleSheet.create({
   container: {
     height: "100%",
-    backgroundColor: '#fff'
+    backgroundColor: '#fff',
+    padding: 0,
   },
   gradient: {
     position: "absolute",
