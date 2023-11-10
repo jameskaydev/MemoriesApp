@@ -27,12 +27,12 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{
+      {/* <Stack.Navigator screenOptions={{
         headerShown: false
       }}>
         <Stack.Screen name="OnboardingChat" component={OnboardingChat} />
-      </Stack.Navigator>
-      {/* <HomeStack /> */}
+      </Stack.Navigator> */}
+      <HomeStack />
 
       {/* <AuthStack /> */}
     </NavigationContainer>

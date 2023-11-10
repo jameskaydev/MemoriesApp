@@ -1,16 +1,17 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   View,
   Text,
   Image,
   TouchableOpacity,
   Platform,
+  ActivityIndicator
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { AuthStyles as styles } from "../styles/styles";
 import { useNavigation } from "@react-navigation/core";
 import { useIdTokenAuthRequest as useGoogleIdTokenAuthRequest } from "expo-auth-session/providers/google";
-import { doc, getDoc  } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 import { OAuthProvider, signInWithCredential, GoogleAuthProvider } from "firebase/auth";
 import { auth, db } from "../../firebaseConfig";
 import * as AppleAuth from 'expo-apple-authentication';
@@ -38,17 +39,15 @@ const discovery = {
 
 const Enterance = () => {
   const navigation = useNavigation();
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   // Facebook Auth
   const [request, response, promptAsync] = useAuthRequest(
     {
       clientId: '1061944271657858',
       scopes: ['public_profile', 'email'],
-      // For usage in managed apps using the proxy
       redirectUri: makeRedirectUri({
-        // For usage in bare and standalone
         native: 'fb1061944271657858://authorize',
-        // useProxy: Platform.select({ web: false, default: true }),
       }),
       responseType: ResponseType.Token,
     },
@@ -58,29 +57,21 @@ const Enterance = () => {
   useEffect(() => {
     if (response?.type === 'success') {
       const { access_token } = response.params;
-  
       const credential = FacebookAuthProvider.credential(access_token);
-  
       signInWithCredential(auth, credential)
-        .then( async (user) => {
+        .then(async (user) => {
+          setIsLoading(true)
           const uid = user.user.uid
           const docRef = doc(db, "users", uid);
           const docc = await getDoc(docRef);
-          if ( docc.data()?.is_onboarding_complete ) {
+          if (docc.data()?.is_onboarding_complete) {
             navigation.navigate("Home" as never);
           } else {
             navigation.navigate("Onboarding" as never);
           }
         })
         .catch((error) => {
-          // Handle Errors here.
-          var errorCode = error.code;
-          var errorMessage = error.message;
-          // The email of the user's account used.
-          var email = error.email;
-          // The firebase.auth.AuthCredential type that was used.
-          var credential = error.credential;
-          // ...
+          setIsLoading(false)
         });
     }
   }, [response]);
@@ -108,16 +99,20 @@ const Enterance = () => {
           googleResponse.params.id_token
         );
         await signInWithCredential(auth, credentials)
-        .then(async user => {
-          const uid = user.user.uid
-          const docRef = doc(db, "users", uid);
-          const docc = await getDoc(docRef);
-          if ( docc.data()?.is_onboarding_complete ) {
-            navigation.navigate("Home" as never);
-          } else {
-            navigation.navigate("Onboarding" as never);
-          }
-        })
+          .then(async user => {
+            setIsLoading(true)
+            const uid = user.user.uid
+            const docRef = doc(db, "users", uid);
+            const docc = await getDoc(docRef);
+            if (docc.data()?.is_onboarding_complete) {
+              navigation.navigate("Home" as never);
+            } else {
+              navigation.navigate("Onboarding" as never);
+            }
+          })
+          .catch(() => {
+            setIsLoading(false)
+          })
       }
     };
 
@@ -130,48 +125,52 @@ const Enterance = () => {
     const nonce = Math.random().toString(36).substring(2, 10);
 
     return Crypto.digestStringAsync(Crypto.CryptoDigestAlgorithm.SHA256, nonce)
-    .then((hashedNonce) => {
-      AppleAuth.signInAsync({
-        requestedScopes: [
-          AppleAuth.AppleAuthenticationScope.FULL_NAME,
-          AppleAuth.AppleAuthenticationScope.EMAIL
-        ],
-        nonce: hashedNonce
-      })
-      .then((appleCreds) => {
-        const { identityToken } = appleCreds;
-        const provider = new OAuthProvider('apple.com')
-        const creds = provider.credential({
-          idToken: identityToken as any,
-          rawNonce: nonce
+      .then((hashedNonce) => {
+        AppleAuth.signInAsync({
+          requestedScopes: [
+            AppleAuth.AppleAuthenticationScope.FULL_NAME,
+            AppleAuth.AppleAuthenticationScope.EMAIL
+          ],
+          nonce: hashedNonce
         })
-        console.log('creds')
-        console.log(creds)
-        signInWithCredential(auth, creds).then(async (user) => {
-          console.log('user')
-          console.log(user.user)
-          const uid = user.user.uid;
-          const docRef = doc(db, "users", uid as never);
-          const docc = await getDoc(docRef);
-          if ( docc.data()?.is_onboarding_complete ) {
-            navigation.navigate("Home" as never);
-          } else {
-            navigation.navigate("Onboarding" as never);
-          }
-        }).catch(e => {
-          console.log("1")
-          console.log(e)
-        })
+          .then((appleCreds) => {
+            setIsLoading(true)
+            const { identityToken } = appleCreds;
+            const provider = new OAuthProvider('apple.com')
+            const creds = provider.credential({
+              idToken: identityToken as any,
+              rawNonce: nonce
+            })
+            console.log('creds')
+            console.log(creds)
+            signInWithCredential(auth, creds)
+            .then(async (user) => {
+              console.log('user')
+              console.log(user.user)
+              const uid = user.user.uid;
+              const docRef = doc(db, "users", uid as never);
+              const docc = await getDoc(docRef);
+              if (docc.data()?.is_onboarding_complete) {
+                navigation.navigate("Home" as never);
+              } else {
+                navigation.navigate("Onboarding" as never);
+              }
+            }).catch(e => {
+              setIsLoading(false)
+              console.log("1")
+              console.log(e)
+            })
+          })
+          .catch(e => {
+            setIsLoading(false)
+            console.log("2")
+            console.log(e)
+          })
       })
       .catch(e => {
-        console.log("2")
+        console.log("3")
         console.log(e)
       })
-    })
-    .catch(e => {
-      console.log("3")
-      console.log(e)
-    })
   }
   // End of Apple Auth
 
@@ -201,14 +200,14 @@ const Enterance = () => {
 
           {Platform.OS === "ios" && (
             <TouchableOpacity
-            onPress={() => signInWithApple()}
+              onPress={() => signInWithApple()}
             >
               <SvgButton company="apple" width={mScale(60)} height={mScale(60)} />
             </TouchableOpacity>
           )}
 
           <TouchableOpacity
-          onPress={() => handleLoginGoogle()}
+            onPress={() => handleLoginGoogle()}
           >
             <SvgButton company="google" width={mScale(60)} height={mScale(60)} />
           </TouchableOpacity>
@@ -248,6 +247,22 @@ const Enterance = () => {
         style={styles().enteranceFooterImage}
       />
 
+      {
+        isLoading && (
+          <View style={{
+            position: 'absolute',
+            top: 0,
+            right: 0,
+            bottom: 0,
+            left: 0,
+            backgroundColor: 'rgba(0,0,0,0.6)',
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}>
+            <ActivityIndicator size='large' color='#FFF' />
+          </View>
+        )
+      }
     </SafeAreaView>
   );
 };

@@ -1,5 +1,4 @@
-import { View, Text, FlatList, StyleSheet } from "react-native";
-import { useEffect, useState } from "react";
+import { View, StyleSheet, ScrollView } from "react-native";
 import MessageBox from "./onboarding/MessageBox";
 
 interface ArrayProps {
@@ -16,10 +15,9 @@ interface ArrayProps {
 interface MessagesProps {
   setSentTrue: (index:number) => void;
   messages: ArrayProps[];
-  inverted: boolean;
 }
 
-const ChatMessages = ({ messages, setSentTrue, inverted }: MessagesProps) => {  
+const ChatMessages = ({ messages, setSentTrue }: MessagesProps) => {  
   return (
     <View
       style={{
@@ -28,23 +26,27 @@ const ChatMessages = ({ messages, setSentTrue, inverted }: MessagesProps) => {
         flexDirection: 'column-reverse'
       }}
     >
-      <FlatList
-        data={messages.reverse()}
-        keyExtractor={(_, index) => index.toString()}
-        inverted={inverted}
-        renderItem={({ item, index }) => {
+      <ScrollView
+      style={{
+        flexDirection: 'column-reverse'
+      }}
+      >
+        {
+          messages.map((item, index) => {
             return (
-            <MessageBox 
+              <MessageBox 
               message={item.message} 
               sender={item.sender} 
               index={item.index as any}
               sent={item.sent as any}
               mainIndex={index}
               setSentTrue={setSentTrue}
+              key={index}
             />
-          )
-        }}
-      />
+            )
+          })
+        }
+      </ScrollView>
     </View>
   );
 };

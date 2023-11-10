@@ -48,7 +48,7 @@ const OnboardingChat = () => {
     is_onboarding_complete: false,
     pronouns: "",
   });
-  const [inverted, setInverted] = useState(true);
+  const [showInput, setShowInput] = useState<boolean>(false);
 
   const navigation = useNavigation();
 
@@ -81,7 +81,7 @@ const OnboardingChat = () => {
         setDividedData(divided);
         setData([divided[0]]);
         setCurrentData([...(divided[0] as any)]);
-        setMainMessages(divided[0].reverse());
+        setMainMessages(divided[0]);
         setCurrentIndex(currentIndex + 1);
       } else {
         console.log("no such a doc exists");
@@ -110,7 +110,6 @@ const OnboardingChat = () => {
   };
 
   const sendEventHandler = (property: string, value: string) => {
-    setInverted(false)
     if ( property === 'name' ) {
       const m = mainMessages.reverse();
       setMainMessages(m);
@@ -182,6 +181,11 @@ const OnboardingChat = () => {
   const setSentTrue = (index: number) => {
     const newMainMessages = mainMessages;
     newMainMessages[index].sent = true;
+    if ( index === (mainMessages.length - 1)) {
+      setShowInput(true)
+    } else {
+      setShowInput(false)
+    }
   }
 
   return (
@@ -189,9 +193,12 @@ const OnboardingChat = () => {
       <KeyboardAvoidingView behavior="height" style={{height: '100%'}}>
         <ChatMessages messages={mainMessages as any}
         setSentTrue={setSentTrue}
-        inverted={inverted}
         />
-        {currentData[(currentData.length - 1) as any] ? inputGenerator() : null}
+        {
+            currentData[(currentData.length - 1) as any] &&
+            showInput && 
+            inputGenerator()
+        }
         <LinearGradient
         style={styles().gradient}
           colors={["#FFFFFF", "#FFFFFFD8", "#FFFFFF00"]}

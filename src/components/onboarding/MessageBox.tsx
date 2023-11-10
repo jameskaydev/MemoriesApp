@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Image, Dimensions } from "react-native";
+import { View, Text, StyleSheet, Image, Dimensions, Button } from "react-native";
 import LogoMain from "../svg/LogoMain";
 import { useState, useEffect } from "react";
 import LoadingDots from "../LoadingDots";
@@ -9,16 +9,16 @@ const MessageBox = ({
   message,
   sender,
   index,
-  sent,
+  sent, 
   mainIndex,
-  setSentTrue
+  setSentTrue,
 }: {
   message: string;
   sender: string;
   index: number;
   sent: boolean;
   mainIndex: number;
-  setSentTrue: (index: number) => void
+  setSentTrue: (index: number) => void,
 }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isSent, setIsSent] = useState<boolean>(sent)
