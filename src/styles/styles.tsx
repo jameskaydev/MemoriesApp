@@ -1,4 +1,5 @@
 import { StyleSheet, Dimensions } from "react-native"
+import { hScale, mScale, vScale } from "../utils/scale";
 
 const { width, height } = Dimensions.get("window")
 const redBorder = {
@@ -188,18 +189,18 @@ export const HomeStyles = () => StyleSheet.create({
 // Enterance
 export const AuthStyles = () => StyleSheet.create({
   enteranceTitle: {
-    fontSize: 88,
+    fontSize: mScale(88),
     lineHeight: 70,
     fontFamily: "AveriaSerifLibre_700Bold"
   },
   enteranceTitleContainer: {
-    paddingTop: 94,
+    paddingTop: hScale(94),
     paddingLeft: 15,
   },
   enteranceDesc: {
-    fontSize: 20,
+    fontSize: mScale(20),
     lineHeight: 24,
-    marginTop: 40,
+    marginTop: hScale(40),
     fontFamily: "AveriaSerifLibre_400Regular"
   },
   enteranceBtnContainer: {
@@ -242,12 +243,12 @@ const emailErrors = [
 
 export const SignupStyles = ({ margin, error, isBlank, isPass, btnPadding }: SignupStyleProps) => StyleSheet.create({
   title: {
-    fontSize: 48,
-    marginTop: 130,
-    marginLeft: 15
+    fontSize: mScale(48),
+    marginTop: hScale(130),
+    marginLeft: vScale(15)
   },
   formContainer: {
-    marginTop: 108
+    marginTop: hScale(108)
   },
   input: {
     borderBottomColor: isPass ?
@@ -287,6 +288,12 @@ export const SignupStyles = ({ margin, error, isBlank, isPass, btnPadding }: Sig
 export const onboardingChatStyles = () => StyleSheet.create({
   container: {
     height: "100%",
-    paddingBottom: 150,
+    backgroundColor: '#fff'
+  },
+  gradient: {
+    position: "absolute",
+    top: 0,
+    width: "100%",
+    height: "30%",
   }
 })

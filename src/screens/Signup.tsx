@@ -19,6 +19,8 @@ import { auth } from "../../firebaseConfig";
 import LinkButton from "../components/LinkButton";
 import LogoMain from "../components/svg/LogoMain";
 import Visibility from "../components/svg/Visibility";
+import Invisibility from "../components/svg/Invisibility";
+import { hScale, vScale } from "../utils/scale";
 
 const Signup = () => {
   const [email, setEmail] = useState("");
@@ -66,7 +68,7 @@ const Signup = () => {
         <Text
           style={[styles({}).title, { fontFamily: "AveriaSerifLibre_700Bold" }]}
         >
-          Sign Up <LogoMain width="54" height="50" />
+          Sign Up <LogoMain width={54} height={50} />
         </Text>
       </View>
 
@@ -105,7 +107,11 @@ const Signup = () => {
             }}
             onPress={() => setIsMainPassVisible(!isMainPassVisibile)}
           >
-            <Visibility width={25} height={25} />
+            {
+              isMainPassVisibile ? 
+              <Invisibility width={25} height={25} /> : 
+              <Visibility width={25} height={25} />
+            }
           </TouchableOpacity>
         </View>
 
@@ -130,7 +136,11 @@ const Signup = () => {
             }}
             onPress={() => setIsRepeatPassVisible(!isRepeatPassVisibile)}
           >
-            <Visibility width={25} height={25} />
+            {
+              isRepeatPassVisibile ? 
+              <Invisibility width={25} height={25} /> :
+              <Visibility width={25} height={25} />
+            }
           </TouchableOpacity>
         </View>
         {error.error ? <Text style={{ marginBottom: 40, paddingLeft: 15, color: 'red' }}>{error.message}</Text> : null}
@@ -158,13 +168,13 @@ const Signup = () => {
         </TouchableOpacity>
       </View>
 
-      <View style={{ marginTop: 60 }}>
+      <View style={{ marginTop: hScale(40) }}>
         <Text
           style={{
             fontFamily: "AveriaSerifLibre_400Regular",
             fontSize: 20,
             textAlign: "center",
-            marginBottom: 10,
+            marginBottom: hScale(10),
           }}
         >
           Do you already have an account?

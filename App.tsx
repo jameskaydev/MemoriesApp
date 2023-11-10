@@ -11,6 +11,7 @@ import AppLoading from "./src/components/AppLoading";
 // SplashScreen.preventAutoHideAsync();
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import Onboarding from "./src/screens/Onboarding";
+import OnboardingChat from "./src/screens/OnboardingChat";
 const Stack = createNativeStackNavigator()
 
 export default function App() {
@@ -26,12 +27,12 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      {/* <Stack.Navigator screenOptions={{
+      <Stack.Navigator screenOptions={{
         headerShown: false
       }}>
-        <Stack.Screen name="Onboarding" component={Onboarding} />
-      </Stack.Navigator> */}
-      <HomeStack />
+        <Stack.Screen name="OnboardingChat" component={OnboardingChat} />
+      </Stack.Navigator>
+      {/* <HomeStack /> */}
 
       {/* <AuthStack /> */}
     </NavigationContainer>

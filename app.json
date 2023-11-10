@@ -4,7 +4,7 @@
     "slug": "memories",
     "version": "0.0.1",
     "orientation": "portrait",
-    "icon": "./assets/images/logo.png",
+    "icon": "./assets/logo.png",
     "userInterfaceStyle": "light",
     "assetBundlePatterns": [
       "**/*"
@@ -12,7 +12,8 @@
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "ai.simplify.moments",
-      "buildNumber": "1"
+      "buildNumber": "1",
+      "usesAppleSignIn": true
     },
     "android": {
       "adaptiveIcon": {
@@ -29,7 +30,7 @@
         "projectId": "6e76ce56-3eaf-489c-8b55-357014f52b6c"
       }
     },
-    "plugins": [],
+    "plugins": ["expo-apple-authentication"],
     "owner": "jameskaydev"
   }
 }

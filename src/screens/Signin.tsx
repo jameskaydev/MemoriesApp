@@ -21,6 +21,7 @@ import LinkButton from "../components/LinkButton";
 import LogoMain from "../components/svg/LogoMain";
 import Visibility from "../components/svg/Visibility";
 import Invisibility from "../components/svg/Invisibility";
+import { hScale } from "../utils/scale";
 
 const Signin = () => {
   const [email, setEmail] = useState("");
@@ -70,7 +71,7 @@ const Signin = () => {
         <Text
           style={[styles({}).title, { fontFamily: "AveriaSerifLibre_700Bold" }]}
         >
-          Sign In <LogoMain width="54" height="50" />
+          Sign In <LogoMain width={54} height={50} />
         </Text>
       </View>
 
@@ -109,7 +110,11 @@ const Signin = () => {
             }}
             onPress={() => setIsMainPassVisible(!isMainPassVisibile)}
           >
-            <Visibility width={25} height={25} />
+            {
+              isMainPassVisibile ?
+              <Invisibility width={25} height={25} /> :
+              <Visibility width={25} height={25} />
+            }
           </TouchableOpacity>
         </View>
         {error.error ? <Text style={{ marginBottom: 40, paddingLeft: 15, color: 'red' }}>{error.message}</Text> : null}
@@ -134,7 +139,7 @@ const Signin = () => {
         </TouchableOpacity>
       </View>
 
-      <View style={{ marginTop: 180 }}>
+      <View style={{ marginTop: hScale(150) }}>
         <LinkButton
           text="Sign Up"
           preText="New here? "

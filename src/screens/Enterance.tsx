@@ -62,10 +62,15 @@ const Enterance = () => {
       const credential = FacebookAuthProvider.credential(access_token);
   
       signInWithCredential(auth, credential)
-        .then((userCredential) => {
-          // Signed in
-          var user = userCredential.user;
-          // ...
+        .then( async (user) => {
+          const uid = user.user.uid
+          const docRef = doc(db, "users", uid);
+          const docc = await getDoc(docRef);
+          if ( docc.data()?.is_onboarding_complete ) {
+            navigation.navigate("Home" as never);
+          } else {
+            navigation.navigate("Onboarding" as never);
+          }
         })
         .catch((error) => {
           // Handle Errors here.
@@ -140,7 +145,11 @@ const Enterance = () => {
           idToken: identityToken as any,
           rawNonce: nonce
         })
+        console.log('creds')
+        console.log(creds)
         signInWithCredential(auth, creds).then(async (user) => {
+          console.log('user')
+          console.log(user.user)
           const uid = user.user.uid;
           const docRef = doc(db, "users", uid as never);
           const docc = await getDoc(docRef);
@@ -150,15 +159,18 @@ const Enterance = () => {
             navigation.navigate("Onboarding" as never);
           }
         }).catch(e => {
-          // console.log(e)
+          console.log("1")
+          console.log(e)
         })
       })
       .catch(e => {
-        // console.log('errrr')
+        console.log("2")
+        console.log(e)
       })
     })
     .catch(e => {
-      // console.log(e)
+      console.log("3")
+      console.log(e)
     })
   }
   // End of Apple Auth

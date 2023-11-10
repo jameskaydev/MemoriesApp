@@ -4,7 +4,7 @@ import { doc, getDoc, setDoc } from "firebase/firestore";
 import { useNavigation } from "@react-navigation/core";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { onboardingChatStyles as styles } from "../styles/styles"; // styles
-
+import { LinearGradient } from "expo-linear-gradient";
 // Components
 import ChatMessages from "../components/ChatMessages";
 import UserInput from "../components/onboarding/UserInput";
@@ -13,6 +13,7 @@ import Datepicker from "../components/onboarding/Datepicker";
 // utils
 import parseJsonArray from "../utils/parseArrayofJson";
 import dividePrompts from "../utils/dividePrompts";
+import { KeyboardAvoidingView, Image } from "react-native";
 
 // interfaces
 interface Message {
@@ -109,6 +110,13 @@ const OnboardingChat = () => {
     if (property !== "links") {
       updateUserData(property, value);
       manageFlows();
+      dividedData[currentIndex].forEach(item => {
+        if ( item.message.includes('{user.name}') && property === 'name' ) {
+          item.message = item.message.replace('{user.name}', value)
+        } else if ( item.message.includes('{user.nick_name}') && property === 'nick_name') {
+          item.message = item.message.replace('{user.nick_name}', value)
+        }
+      })
       setMainMessages([{ message: value, sender: "user" }, ...mainMessages]);
       setMainMessages([
         ...dividedData[currentIndex].reverse(), 
@@ -162,8 +170,16 @@ const OnboardingChat = () => {
 
   return (
     <SafeAreaView style={styles().container}>
-      <ChatMessages messages={mainMessages as any} />
-      {currentData[(currentData.length - 1) as any] ? inputGenerator() : null}
+      <KeyboardAvoidingView behavior="height">
+        <ChatMessages messages={mainMessages as any} />
+        {currentData[(currentData.length - 1) as any] ? inputGenerator() : null}
+        <LinearGradient
+        style={styles().gradient}
+          colors={["#FFFFFF", "#FFFFFFD8", "#FFFFFF00"]}
+          start={{ x: 0.5, y: 0 }}
+          end={{ x: 0.5, y: 0.6 }}
+        ></LinearGradient>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };

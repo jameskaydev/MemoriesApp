@@ -1,36 +1,20 @@
+import { useState } from "react";
 import {
   View,
   Text,
   TextInput,
   StyleSheet,
   TouchableOpacity,
-  FlatList
+  FlatList,
 } from "react-native";
-import { useNavigation } from "@react-navigation/core";
-// import {
-//   AveriaSerifLibre_400Regular,
-//   useFonts,
-// } from "@expo-google-fonts/averia-serif-libre";
-import { useState, useEffect } from "react";
 
 import ChatSendIcon from "../svg/ChatSendIcon";
-
-// interface Props {
-//   pushToMessages: ({
-//     message,
-//     sender,
-//   }: {
-//     message: string;
-//     sender: string;
-//   }) => void;
-// }
 
 interface Props {
   options?: string[];
   input?: boolean;
   type: string;
   sendEventHandler: (property: string, value: string) => void;
-  // addUserMessage: (message: string) => void;
 }
 
 const UserInput = ({ options, input, sendEventHandler, type }: Props) => {
@@ -68,17 +52,17 @@ const UserInput = ({ options, input, sendEventHandler, type }: Props) => {
           renderItem={({ item, index }) => {
             return (
               <TouchableOpacity key={index} onPress={() => {
-                setInputValue('')
                 sendEventHandler(type, item)
+                setInputValue('')
               }}
-                style={styles.optionBtn}>
+              style={styles.optionBtn}>
                 <Text style={styles.optionBtnTxt}>{item}</Text>
               </TouchableOpacity>
             )
           }}
-        />
-
-      )}
+          />
+          
+          )}
       {input && (
         <View style={styles.textInputInnerContainer}>
           <TextInput
@@ -92,12 +76,13 @@ const UserInput = ({ options, input, sendEventHandler, type }: Props) => {
             ]}
             value={inputValue}
             onChangeText={(txt) => setInputValue(txt)}
-          />
+            />
           <TouchableOpacity
             onPress={() => {
               inputValue.trim()
-                ? (() => {
-                  sendEventHandler(type, inputValue)
+              ? (() => {
+                sendEventHandler(type, inputValue)
+                setInputValue('')
                 })()
                 : null;
             }}
@@ -119,16 +104,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     width: "100%",
   },
-  textInputInnerContainer: {
+  textInputInnerContainer: { 
     position: "relative",
     paddingBottom: 10
-    // borderWidth: 3,
-    // borderColor: "green",
-  },
+  }, 
   optionsContainer: {
     flexDirection: "row",
-    // borderWidth: 2,
-    // borderColor: "red",
     paddingBottom: 25
   },
   optionBtn: {
