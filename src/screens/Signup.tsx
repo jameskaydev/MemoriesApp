@@ -2,7 +2,7 @@ import {
   View,
   Text,
   TextInput,
-  TouchableOpacity,
+  TouchableOpacity, 
   Image,
   Dimensions,
   ActivityIndicator
@@ -43,8 +43,10 @@ const Signup = () => {
       setIsLoading(true)
       createUserWithEmailAndPassword(auth, email, mainPass)
         .then(userCreds => {
-          const user = userCreds.user;
-          console.log(user.email);
+          setEmail("")
+          setMainPass("")
+          setRepeatPass("")
+          setIsLoading(false)
           navigation.navigate("Success" as never);
         })
         .catch(err => {
@@ -55,8 +57,12 @@ const Signup = () => {
               setError({ error: true, message: "Email already exists!" })
             case AuthErrorCodes.INVALID_EMAIL:
               setError({ error: true, message: "Invalid email address!" })
+            case AuthErrorCodes.NETWORK_REQUEST_FAILED:
+              setError({ error: true, message: "Network request failed!" })
+            case AuthErrorCodes.CREDENTIAL_MISMATCH:
+              setError({ error: true, message: "Passwords not match!" })
             default:
-              navigation.navigate("Failure" as never)
+              setError({ error: true, message: "Something went wrong!"});
           }
         })
     }

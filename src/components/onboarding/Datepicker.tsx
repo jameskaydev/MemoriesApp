@@ -4,6 +4,7 @@ import {
   Platform,
   TouchableOpacity,
   StyleSheet,
+  Dimensions
 } from "react-native";
 import { useState } from "react";
 import DateTimePicker from "@react-native-community/datetimepicker";
@@ -38,7 +39,7 @@ const Datepicker = ({ type, sendEventHandler }: DatepickerProps) => {
         style={{
           borderWidth: 2,
           borderColor: "red",
-          height: "100%", 
+          height: "100%",
         }}
       >
         <Text>{showi}</Text>
@@ -87,18 +88,21 @@ const Datepicker = ({ type, sendEventHandler }: DatepickerProps) => {
     );
   }
 };
-
+const { width } = Dimensions.get("window")
 const styles = StyleSheet.create({
   iosDatepickerContainer: {
     borderWidth: 1,
     borderColor: "#252525",
     borderRadius: 30,
-    marginHorizontal: 15,
     paddingHorizontal: 15,
     paddingBottom: 10,
     paddingTop: 20,
     position: "absolute",
-    bottom: 0,
+    bottom: 15,
+    width: width - 30,
+    alignSelf: 'center',
+    right: 15,
+    left: 15
   },
   iosDatepicker: {
     height: 100,
@@ -109,7 +113,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#252525",
     paddingVertical: 10,
     borderRadius: 30,
-    // marginHorizontal: 15
   },
   datepickerBtnTxt: {
     fontSize: 20,

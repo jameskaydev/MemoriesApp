@@ -1,5 +1,6 @@
-import { View, StyleSheet, ScrollView } from "react-native";
+import { View, StyleSheet, ScrollView, VirtualizedList, Text, TouchableOpacity } from "react-native";
 import MessageBox from "./onboarding/MessageBox";
+import { useRef } from "react";
 
 interface ArrayProps {
   properties?: string[] | null;
@@ -18,35 +19,41 @@ interface MessagesProps {
 }
 
 const ChatMessages = ({ messages, setSentTrue }: MessagesProps) => {  
+  const ref = useRef<any>()
   return (
     <View
       style={{
         height: "100%",
         paddingBottom: 160,
-        flexDirection: 'column-reverse'
+        alignItems: 'flex-end',
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+        flex: 1
       }}
     >
-      <ScrollView
-      style={{
-        flexDirection: 'column-reverse'
-      }}
-      >
-        {
-          messages.map((item, index) => {
-            return (
-              <MessageBox 
-              message={item.message} 
-              sender={item.sender} 
-              index={item.index as any}
-              sent={item.sent as any}
-              mainIndex={index}
-              setSentTrue={setSentTrue}
-              key={index}
-            />
-            )
-          })
-        }
-      </ScrollView>
+      <VirtualizedList
+        data={messages}
+        inverted={true}
+        keyExtractor={(item) => item.id}
+        getItemCount={(data) => data.length}
+        getItem={(data, index) => data[index]}
+        renderItem={({item, index}: {item:any, index: number}) => {
+          return (
+            <MessageBox
+            message={item.message} 
+            sender={item.sender} 
+            index={item.index as any}
+            sent={item.sent as any}
+            mainIndex={index}
+            setSentTrue={setSentTrue}
+          />
+          )
+        }}
+        contentContainerStyle={{
+          flexDirection: 'column-reverse',
+          justifyContent: 'flex-end'
+        }}
+      />
     </View>
   );
 };

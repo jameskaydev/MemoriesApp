@@ -4,7 +4,6 @@
     "slug": "memories",
     "version": "0.0.1",
     "orientation": "portrait",
-    "icon": "./assets/logo.png",
     "userInterfaceStyle": "light",
     "assetBundlePatterns": [
       "**/*"

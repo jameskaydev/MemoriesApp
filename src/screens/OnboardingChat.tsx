@@ -13,7 +13,7 @@ import Datepicker from "../components/onboarding/Datepicker";
 // utils 
 import parseJsonArray from "../utils/parseArrayofJson";
 import dividePrompts from "../utils/dividePrompts";
-import { KeyboardAvoidingView, Image } from "react-native";
+import { KeyboardAvoidingView, Dimensions, TouchableOpacity, Text } from "react-native";
 
 // interfaces
 interface Message {
@@ -110,28 +110,24 @@ const OnboardingChat = () => {
   };
 
   const sendEventHandler = (property: string, value: string) => {
-    if ( property === 'name' ) {
-      const m = mainMessages.reverse();
-      setMainMessages(m);
-    }
     if (property !== "links") {
       updateUserData(property, value);
       manageFlows();
       dividedData[currentIndex].forEach(item => {
-        if ( item.message.includes('{user.name}') && property === 'name' ) {
+        if (item.message.includes('{user.name}') && property === 'name') {
           item.message = item.message.replace('{user.name}', value)
-        } else if ( item.message.includes('{user.nick_name}') && property === 'nick_name') {
+        } else if (item.message.includes('{user.nick_name}') && property === 'nick_name') {
           item.message = item.message.replace('{user.nick_name}', value)
         }
       })
       setMainMessages([
         ...mainMessages,
-        { message: value, sender: "user", sent: true }, 
+        { message: value, sender: "user", sent: true },
       ]);
       setMainMessages([
         ...mainMessages,
         { message: value, sender: "user", sent: true },
-        ...dividedData[currentIndex], 
+        ...dividedData[currentIndex],
       ]);
     } else {
       handleAddDoc();
@@ -181,7 +177,8 @@ const OnboardingChat = () => {
   const setSentTrue = (index: number) => {
     const newMainMessages = mainMessages;
     newMainMessages[index].sent = true;
-    if ( index === (mainMessages.length - 1)) {
+    // listRef.current.scrollToEnd();
+    if (index === (mainMessages.length - 1)) {
       setShowInput(true)
     } else {
       setShowInput(false)
@@ -189,24 +186,25 @@ const OnboardingChat = () => {
   }
 
   return (
-    <SafeAreaView style={styles().container}>
-      <KeyboardAvoidingView behavior="height" style={{height: '100%'}}>
-        <ChatMessages messages={mainMessages as any}
-        setSentTrue={setSentTrue}
+    <KeyboardAvoidingView behavior="padding">
+      <SafeAreaView style={[styles().container]}>
+        <ChatMessages 
+          messages={mainMessages as any}
+          setSentTrue={setSentTrue}
         />
         {
-            currentData[(currentData.length - 1) as any] &&
-            showInput && 
-            inputGenerator()
+          currentData[(currentData.length - 1) as any] &&
+          showInput &&
+          inputGenerator()
         }
         <LinearGradient
-        style={styles().gradient}
+          style={styles().gradient}
           colors={["#FFFFFF", "#FFFFFFD8", "#FFFFFF00"]}
           start={{ x: 0.5, y: 0 }}
           end={{ x: 0.5, y: 0.6 }}
         />
-      </KeyboardAvoidingView>
-    </SafeAreaView>
+      </SafeAreaView>
+    </KeyboardAvoidingView>
   );
 };
 

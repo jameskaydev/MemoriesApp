@@ -16,13 +16,9 @@ const HomeStack = () => {
   const HomeStack = createNativeStackNavigator();
   return (
     <HomeStack.Navigator
-      initialRouteName="Enterance"
+      initialRouteName="Signup"
       screenOptions={{
         headerShown: false,
-        // drawerPosition: 'right',
-        // drawerStyle: {
-        //   backgroundColor: '#252525'
-        // }
       }}
     >
       <HomeStack.Screen name="OnboardingChat" component={OnboardingChat} />
