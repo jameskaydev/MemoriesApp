@@ -11,7 +11,7 @@ import {
 import ChatSendIcon from "../svg/ChatSendIcon";
 
 interface Props {
-  options?: string[];
+  options?: string[] | null;
   input?: boolean;
   type: string;
   sendEventHandler: (property: string, value: string) => void;
@@ -68,14 +68,10 @@ const UserInput = ({ options, input, sendEventHandler, type }: Props) => {
           <TextInput
             placeholder="Your Name"
             placeholderTextColor="rgba(37, 37, 37, 0.4)"
-            style={[
-              styles.textInput,
-              {
-                fontFamily: "AveriaSerifLibre_400Regular",
-              },
-            ]}
+            style={styles.textInput}
             value={inputValue}
             onChangeText={(txt) => setInputValue(txt)}
+            multiline={true}
             />
           <TouchableOpacity
             onPress={() => {
@@ -133,7 +129,7 @@ const styles = StyleSheet.create({
     paddingLeft: 30,
     fontSize: 20,
     lineHeight: 20,
-    fontFamily: 'AveriaSerifLibre_400Regular'
+    fontFamily: 'AveriaSerifLibre_400Regular',
   },
   sendIcon: {
     position: "absolute",

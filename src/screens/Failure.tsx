@@ -6,7 +6,7 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/core";
-import styles from '../styles/failureStyles';
+import styles from '../styles/failure';
 
 const Failure = () => {
   const navigation = useNavigation()

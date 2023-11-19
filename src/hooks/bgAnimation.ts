@@ -1,7 +1,7 @@
-import { useRef, DependencyList, useMemo, useEffect, useState } from "react";
+import { useRef, useMemo, useEffect, useState } from "react";
 import { Animated } from "react-native";
 
-const useColorAnimation = (color) => {
+const useColorAnimation = (color: string) => {
   const anim = useMemo(() => new Animated.Value(0), [color]);
   const [finished, setFinished] = useState(true)
   const currentColor = useRef(color);

@@ -1,5 +1,5 @@
 import { StyleSheet, Dimensions } from "react-native"
-import { hScale, mScale, vScale } from "../utils/scale";
+import { h, m, v } from "../utils/scale";
 
 const { width, height } = Dimensions.get("window")
 const redBorder = {
@@ -10,7 +10,7 @@ const greenBorder = {
   borderWidth: 4,
   borderColor: 'green'
 }
-
+ 
 
 // Onboarding Slide
 interface OnboardingSlide {
@@ -184,104 +184,6 @@ export const HomeStyles = () => StyleSheet.create({
     color: '#FFF',
     fontSize: 18
   }
-})
-
-// Enterance
-export const AuthStyles = () => StyleSheet.create({
-  enteranceTitle: {
-    fontSize: mScale(88),
-    lineHeight: 70,
-    fontFamily: "AveriaSerifLibre_700Bold"
-  },
-  enteranceTitleContainer: {
-    paddingTop: hScale(94),
-    paddingLeft: 15,
-  },
-  enteranceDesc: {
-    fontSize: mScale(20),
-    lineHeight: 24,
-    marginTop: hScale(40),
-    fontFamily: "AveriaSerifLibre_400Regular"
-  },
-  enteranceBtnContainer: {
-    flexDirection: "row", 
-    marginRight: 15,
-    marginTop: 30
-  },
-  enteranceFooterTxt: {
-    fontSize: 20,
-    fontFamily: "AveriaSerifLibre_400Regular",
-    marginBottom: 10,
-    textAlign: "center",
-  },
-  enteranceFooterImage: {
-    width: width,
-    position: "absolute",
-    bottom: 0,
-  }
-})
-
-// Sign Up
-interface Error {
-  error: boolean;
-  message: string;
-}
-
-interface SignupStyleProps {
-  margin?: number;
-  error?: Error;
-  isBlank?: boolean;
-  isPass?: boolean;
-  btnPadding?: number;
-}
-
-const emailErrors = [
-  "Password don't match!",
-  "Email alreay exists!",
-  "Invalid email address!"
-]
-
-export const SignupStyles = ({ margin, error, isBlank, isPass, btnPadding }: SignupStyleProps) => StyleSheet.create({
-  title: {
-    fontSize: mScale(48),
-    marginTop: hScale(130),
-    marginLeft: vScale(15)
-  },
-  formContainer: {
-    marginTop: hScale(108)
-  },
-  input: {
-    borderBottomColor: isPass ?
-      (
-        isBlank ? 'red' : (error?.message === "Passwords don't match!" ? 'red' : '#252525')
-      ) : (
-        isBlank ? 'red' : (
-          emailErrors.includes(error?.message as never) ?
-          'red' : '#252525'
-        )),
-    borderBottomWidth: 1,
-    marginHorizontal: 15,
-    paddingBottom: 3,
-    paddingLeft: 12,
-    fontSize: 20,
-    marginBottom: margin 
-  },
-  passContainer: {
-    position: 'relative'
-  },
-  formBtn: {
-    backgroundColor: "#252525",
-    borderRadius: 30,
-    justifyContent: "center",
-    marginHorizontal: 15,
-    paddingVertical: btnPadding
-  },
-  formBtnTxt: {
-    textAlign: "center",
-    fontFamily: "AveriaSerifLibre_400Regular",
-    color: "#FFF",
-    fontSize: 20,
-  },
 })
 
 // Onboarding Chat

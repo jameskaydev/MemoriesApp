@@ -1,20 +1,18 @@
-import { View, Text, Image, StyleSheet, Dimensions, TouchableOpacity } from "react-native";
+import { View, Text, Image, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/core";
+import styles from '../styles/success' // styles
 
-const { width, height } = Dimensions.get("window");
+// types
+import { navigate } from "../types/navigate";
+
 const Success = () => {
-  const navigation = useNavigation()
+  const { navigate } = useNavigation<navigate>()
   return (
-    <SafeAreaView style={[styles.main]}>
+    <SafeAreaView style={styles.main}>
       <View>
         <Text
-          style={[
-            styles.title,
-            {
-              fontFamily: "AveriaSerifLibre_400Regular",
-            },
-          ]}
+          style={styles.title}
         >
           Your account{"\n"}
           has been{"\n"}
@@ -28,20 +26,12 @@ const Success = () => {
       </View>
 
       <View
-        style={{
-          position: "absolute",
-          bottom: 0,
-        }}
+        style={styles.btnsContainer}
       >
-        <TouchableOpacity onPress={() => navigation.navigate("Signin" as never)}>
+        <TouchableOpacity onPress={() => navigate("AuthStack", {screen: "Signin"})}>
           <View style={styles.formBtn}>
             <Text
-              style={[
-                styles.formBtnTxt,
-                {
-                  fontFamily: "AveriaSerifLibre_400Regular",
-                },
-              ]}
+              style={styles.formBtnTxt}
             >
               Get Started
             </Text>
@@ -49,46 +39,11 @@ const Success = () => {
         </TouchableOpacity>
         <Image
           source={require("../../assets/images/bottom_colos.png")}
-          style={{
-            width: width,
-          }}
+          style={styles.bottomImage}
         />
       </View>
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  main: {
-    justifyContent: "center",
-    width: width,
-    height: height,
-  },
-  title: {
-    fontSize: 48,
-    lineHeight: 45,
-    marginLeft: 15,
-    marginBottom: 20,
-  },
-  image: {
-    maxWidth: width,
-    marginLeft: 15,
-    marginBottom: 60
-  },
-  formBtn: {
-    backgroundColor: "#252525",
-    borderRadius: 30,
-    justifyContent: "center",
-    marginHorizontal: 15,
-    marginBottom: 20,
-    paddingVertical: 15
-  },
-  formBtnTxt: {
-    textAlign: "center",
-    fontFamily: "AveriaSerifLibre_400Regular",
-    color: "#FFF",
-    fontSize: 20,
-  },
-});
 
 export default Success;

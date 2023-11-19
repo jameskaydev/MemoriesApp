@@ -1,49 +1,44 @@
-import { StyleSheet } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
-import { useFonts, AveriaSerifLibre_400Regular, AveriaSerifLibre_700Bold, AveriaSerifLibre_300Light } from "@expo-google-fonts/averia-serif-libre";
-import "react-native-gesture-handler"
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import {
+  useFonts,
+  AveriaSerifLibre_400Regular,
+  AveriaSerifLibre_700Bold,
+  AveriaSerifLibre_300Light,
+} from "@expo-google-fonts/averia-serif-libre";
+import "react-native-gesture-handler";
+import { auth } from "./firebaseConfig";
 
 //Stacks
 import HomeStack from "./src/navigation/HomeStack";
 import AuthStack from "./src/navigation/AuthStack";
-import AppLoading from "./src/components/AppLoading";
+import SplashScreen from "./src/components/AppLoading";
 
-// SplashScreen.preventAutoHideAsync();
-import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import Onboarding from "./src/screens/Onboarding";
-import OnboardingChat from "./src/screens/OnboardingChat";
-const Stack = createNativeStackNavigator()
 
 export default function App() {
+  const { Navigator, Screen } = createNativeStackNavigator();
   const [fontsLoaded] = useFonts({
     AveriaSerifLibre_400Regular,
     AveriaSerifLibre_700Bold,
-    AveriaSerifLibre_300Light
-  })
+    AveriaSerifLibre_300Light,
+  });
 
   if (!fontsLoaded) {
-    return <AppLoading />
+    return <SplashScreen />;
   }
 
   return (
     <NavigationContainer>
-      {/* <Stack.Navigator screenOptions={{
-        headerShown: false
-      }}>
-        <Stack.Screen name="OnboardingChat" component={OnboardingChat} />
-      </Stack.Navigator> */}
-      <HomeStack />
-
-      {/* <AuthStack /> */}
+      <Navigator
+        initialRouteName={auth.currentUser ? "HomeStack" : "AuthStack"}
+        // initialRouteName="HomeStack"
+        screenOptions={{
+          headerShown: false,
+        }}
+      >
+        <Screen name="HomeStack" component={HomeStack} />
+        <Screen name="AuthStack" component={AuthStack} />
+      </Navigator>
     </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});

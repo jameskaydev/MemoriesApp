@@ -2,18 +2,15 @@ import { useRef, useEffect, useState } from "react";
 import { FlatList, Animated } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
-// Components
 import OnboardingSlide from "../components/onboarding/OnboardingSlide";
 
-// hooks
 import useColorAnimation from "../hooks/bgAnimation";
 
-// Constants
 import { onboardingList } from "../constants/onboardingList";
 
 const Onboarding = () => {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
-  const [color, setColor] = useState(onboardingList[currentIndex].bgColor);
+  const [color, setColor] = useState<string>(onboardingList[currentIndex].bgColor);
   const [slideInAnimation] = useState<Animated.Value>(new Animated.Value(0))
   const [slideOutAnimation] = useState<Animated.Value>(new Animated.Value(0))
   

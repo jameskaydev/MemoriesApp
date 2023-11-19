@@ -44,6 +44,7 @@ firebaseConfig.ts
 
 # dependencies
 node_modules/
+*-lock.json
 
 # Expo
 .expo/

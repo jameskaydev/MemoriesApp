@@ -30,7 +30,6 @@ function dividePrompts(originalArray: Props[]): Props[][] {
     })
   })
 
-  // console.log(dividedArray)
   return dividedArray;
 }
 

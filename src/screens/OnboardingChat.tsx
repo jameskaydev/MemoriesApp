@@ -1,19 +1,20 @@
 import { useEffect, useState } from "react";
+import { KeyboardAvoidingView, Platform } from "react-native";
 import { db, auth } from "../../firebaseConfig";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { useNavigation } from "@react-navigation/core";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { onboardingChatStyles as styles } from "../styles/styles"; // styles
 import { LinearGradient } from "expo-linear-gradient";
+
 // Components
 import ChatMessages from "../components/ChatMessages";
 import UserInput from "../components/onboarding/UserInput";
 import Datepicker from "../components/onboarding/Datepicker";
 
-// utils 
+// utils
 import parseJsonArray from "../utils/parseArrayofJson";
 import dividePrompts from "../utils/dividePrompts";
-import { KeyboardAvoidingView, Dimensions, TouchableOpacity, Text } from "react-native";
 
 // interfaces
 interface Message {
@@ -110,16 +111,20 @@ const OnboardingChat = () => {
   };
 
   const sendEventHandler = (property: string, value: string) => {
+    setShowInput(false)
     if (property !== "links") {
       updateUserData(property, value);
       manageFlows();
-      dividedData[currentIndex].forEach(item => {
-        if (item.message.includes('{user.name}') && property === 'name') {
-          item.message = item.message.replace('{user.name}', value)
-        } else if (item.message.includes('{user.nick_name}') && property === 'nick_name') {
-          item.message = item.message.replace('{user.nick_name}', value)
+      dividedData[currentIndex].forEach((item) => {
+        if (item.message.includes("{user.name}") && property === "name") {
+          item.message = item.message.replace("{user.name}", value);
+        } else if (
+          item.message.includes("{user.nick_name}") &&
+          property === "nick_name"
+        ) {
+          item.message = item.message.replace("{user.nick_name}", value);
         }
-      })
+      });
       setMainMessages([
         ...mainMessages,
         { message: value, sender: "user", sent: true },
@@ -134,7 +139,7 @@ const OnboardingChat = () => {
     }
   };
 
-  const inputGenerator = () => {
+  const inputGenerator = (properties?: string[] | null) => {
     switch (currentData[(currentData.length - 1) as any].type) {
       case "INPUT":
         return (
@@ -147,7 +152,11 @@ const OnboardingChat = () => {
       case "INPUT_OPTIONS":
         return (
           <UserInput
-            options={[`${userData.name} 1`, `${userData.name} 2`, `${userData.name} 3`]}
+            options={[
+              `${userData.name} 1`,
+              `${userData.name} 2`,
+              `${userData.name} 3`,
+            ]}
             input={true}
             sendEventHandler={sendEventHandler}
             type="nick_name"
@@ -158,7 +167,7 @@ const OnboardingChat = () => {
       case "PRONOUNCE_OPTIONS":
         return (
           <UserInput
-            options={["he/him", "she/her", "they/them"]}
+            options={properties}
             sendEventHandler={sendEventHandler}
             type="pronouns"
           />
@@ -166,7 +175,7 @@ const OnboardingChat = () => {
       case "FINAL_OPTIONS":
         return (
           <UserInput
-            options={["Yes! Let's Go", "Take me to home"]}
+            options={properties}
             sendEventHandler={sendEventHandler}
             type="links"
           />
@@ -177,26 +186,25 @@ const OnboardingChat = () => {
   const setSentTrue = (index: number) => {
     const newMainMessages = mainMessages;
     newMainMessages[index].sent = true;
-    // listRef.current.scrollToEnd();
-    if (index === (mainMessages.length - 1)) {
-      setShowInput(true)
+    if (index === mainMessages.length - 1) {
+      setShowInput(true);
     } else {
-      setShowInput(false)
+      setShowInput(false);
     }
-  }
+  };
 
   return (
-    <KeyboardAvoidingView behavior="padding">
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : undefined}
+    >
       <SafeAreaView style={[styles().container]}>
-        <ChatMessages 
+        <ChatMessages
           messages={mainMessages as any}
           setSentTrue={setSentTrue}
         />
-        {
-          currentData[(currentData.length - 1) as any] &&
+        {currentData[(currentData.length - 1) as any] &&
           showInput &&
-          inputGenerator()
-        }
+          inputGenerator(currentData[currentData.length - 1]?.properties)}
         <LinearGradient
           style={styles().gradient}
           colors={["#FFFFFF", "#FFFFFFD8", "#FFFFFF00"]}

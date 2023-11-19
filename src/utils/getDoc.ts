@@ -7,11 +7,11 @@ interface Props {
 }
 
 const getTheDoc = async ({ collectionName, docName }: Props) => {
-  const docRef = doc(db, 'prompts', 'OnBoarding');
-  const prompts = await getDoc(docRef);
+  const docRef = doc(db, collectionName, docName);
+  const docData = await getDoc(docRef);
 
-  if (prompts.exists()) {
-    return prompts.data()
+  if (docData.exists()) {
+    return docData.data()
   } else {
     console.log('no such a doc exists')
     return;

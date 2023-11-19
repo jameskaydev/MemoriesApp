@@ -1,13 +1,11 @@
-import { TouchableOpacity, Text, StyleSheet, View } from "react-native";
+import { TouchableOpacity, Text, StyleSheet } from "react-native";
 
 interface ButtonProps {
   text: string;
   onpress?: () => void;
-  navigation?: any;
-  // width: number;
 }
 
-const Button = ({ text, onpress, navigation }: ButtonProps) => {
+const Button = ({ text, onpress }: ButtonProps) => {
   return (
     <TouchableOpacity onPress={onpress} style={styles.container}>
       <Text style={styles.text}>{text}</Text>
