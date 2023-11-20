@@ -2,16 +2,20 @@ import { View, Text, TouchableOpacity, Image } from "react-native";
 import { HomeStyles as styles } from "../styles/styles";
 import LogoSmall from "./svg/LogoSmall";
 import ManuBar from "./svg/MenuBar";
+import { useNavigation } from "@react-navigation/core";
+import { navigate } from "../types/navigate";
 
 interface HomeTopBarProps {
   memories: string[];
 }
 
 const HomeTopBar = ({ memories }: HomeTopBarProps) => {
+  const { navigate } = useNavigation<navigate>()
+  const { openDrawer } = useNavigation() as any;
   return (
     <View style={{ paddingBottom: 48 }}>
       <View style={styles().menuBarContainer}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => openDrawer()}>
           <ManuBar width="50" height="50" />
         </TouchableOpacity>
       </View>
@@ -20,7 +24,10 @@ const HomeTopBar = ({ memories }: HomeTopBarProps) => {
         {!memories.length ? <EmptyContent /> : <NotEmptyContent />}
         
         {memories.length && (
-          <TouchableOpacity style={styles().homeSeeAllContainer}>
+          <TouchableOpacity 
+            style={styles().homeSeeAllContainer}
+            onPress={() => navigate("HomeStack", {screen: "Memories"})}
+          >
             <Text
               style={[
                 styles().homeSeeAllBtn,
@@ -47,7 +54,7 @@ const EmptyContent = () => {
       <Text
         style={[styles().homeTitle, { fontFamily: "AveriaSerifLibre_700Bold" }]}
       >
-        Create <LogoSmall width="50" height="50" />
+        Create <LogoSmall width={50} height={50} />
         {"\n"}Your{"\n"}First Memory
       </Text>
       <Image
@@ -63,7 +70,7 @@ const NotEmptyContent = () => {
     <Text
       style={[styles().homeTitle, { fontFamily: "AveriaSerifLibre_700Bold" }]}
     >
-      Your <LogoSmall width="50" height="50" />
+      Your <LogoSmall width={50} height={50} />
       {"\n"}Memories
     </Text>
   );

@@ -17,6 +17,31 @@ export const data = [
   {
     date: 'June 02th\n2020',
     image: require('../../assets/images/memorySample2.png'),
-    title: 'Friends'
+    title: 'Friends1'
+  },
+  {
+    date: 'June 02th\n2020',
+    image: require('../../assets/images/memorySample2.png'),
+    title: 'Friends2'
+  },
+  {
+    date: 'June 02th\n2020',
+    image: require('../../assets/images/memorySample2.png'),
+    title: 'Friends3'
+  },
+  {
+    date: 'June 02th\n2020',
+    image: require('../../assets/images/memorySample2.png'),
+    title: 'Friends4'
+  },
+  {
+    date: 'June 02th\n2020',
+    image: require('../../assets/images/memorySample2.png'),
+    title: 'Friends5'
+  },
+  {
+    date: 'June 02th\n2020',
+    image: require('../../assets/images/memorySample2.png'),
+    title: 'Friends6'
   },
 ]

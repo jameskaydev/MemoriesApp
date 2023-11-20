@@ -2,15 +2,19 @@ import { View, Text, TouchableOpacity, Image, Dimensions } from 'react-native'
 import BackArrow from '../svg/BackArrow'
 import LogoSmall from '../svg/LogoSmall'
 import { MemoriesTopBarStyles as styles } from '../../styles/styles'; // styles
+import { useNavigation } from "@react-navigation/core";
 
 const MemoriesTopBar = () => {
   const { width } = Dimensions.get("window")
+  const { goBack } = useNavigation()
   return (
     <View>
       <View style={styles().innerContainer}>
         <View style={styles().backArrowContainer}>
 
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => goBack()}
+        >
           <BackArrow width={40} height={40} />
         </TouchableOpacity>
           </View>

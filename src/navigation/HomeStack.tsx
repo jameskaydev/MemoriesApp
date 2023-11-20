@@ -5,21 +5,32 @@ import OnboardingChat from "../screens/OnboardingChat";
 import Home from "../screens/Home";
 import Memories from "../screens/Memories";
 import Onboarding from "../screens/Onboarding";
+import Exit from "../Popups/Exit";
+import DrawerContent from "../components/DrawerContent";
+import { createDrawerNavigator } from '@react-navigation/drawer';
+
 
 const HomeStack = () => {
-  const { Navigator, Screen } = createNativeStackNavigator();
+  const Drawer = createDrawerNavigator();
   return (
-    <Navigator
-      initialRouteName="Memories"
+    <Drawer.Navigator
+      initialRouteName="Home"
       screenOptions={{
         headerShown: false,
+        drawerPosition: 'right',
+        drawerType: 'front',
+        drawerStyle: {
+          backgroundColor: '#252525'
+        },
       }}
+      drawerContent={() => <DrawerContent />}
     >
-      <Screen name="Home" component={Home} />
-      <Screen name="Memories" component={Memories} />
-      <Screen name="Onboarding" component={Onboarding} />
-      <Screen name="OnboardingChat" component={OnboardingChat} />
-    </Navigator>
+      <Drawer.Screen name="Home" component={Home} options={{ drawerLabel: () => null }} />
+      <Drawer.Screen name="Memories" component={Memories} />
+      <Drawer.Screen name="Onboarding" component={Onboarding} />
+      <Drawer.Screen name="OnboardingChat" component={OnboardingChat} />
+      <Drawer.Screen name="Exit" component={Exit} />
+    </Drawer.Navigator>
   );
 };
 
