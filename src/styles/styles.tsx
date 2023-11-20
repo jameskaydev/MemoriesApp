@@ -10,6 +10,10 @@ const greenBorder = {
   borderWidth: 4,
   borderColor: 'green'
 }
+
+const fonts = {
+  f400: "AveriaSerifLibre_700Bold"
+}
  
 
 // Onboarding Slide
@@ -182,7 +186,8 @@ export const HomeStyles = () => StyleSheet.create({
   },
   memoryCardInfoText: {
     color: '#FFF',
-    fontSize: 18
+    fontSize: 18,
+    fontFamily: 'AveriaSerifLibre_400Regular'
   }
 })
 
@@ -200,3 +205,23 @@ export const onboardingChatStyles = () => StyleSheet.create({
     height: "30%",
   }
 })
+
+
+// Memories TopBar
+export const MemoriesTopBarStyles = () => StyleSheet.create({
+  title: {
+    fontSize: m(48),
+    fontFamily: fonts.f400,
+    lineHeight: 45,
+    minHeight: v(45)
+  },
+  innerContainer: {
+    flexDirection: 'row',
+    paddingTop: v(72),
+    paddingBottom: v(10)
+  },
+  backArrowContainer: {
+    marginLeft: h(15),
+    marginRight: h(25)
+  }
+});

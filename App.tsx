@@ -30,8 +30,8 @@ export default function App() {
   return (
     <NavigationContainer>
       <Navigator
-        initialRouteName={auth.currentUser ? "HomeStack" : "AuthStack"}
-        // initialRouteName="HomeStack"
+        // initialRouteName={auth.currentUser ? "HomeStack" : "AuthStack"}
+        initialRouteName="HomeStack"
         screenOptions={{
           headerShown: false,
         }}
