@@ -26,10 +26,10 @@
     },
     "extra": {
       "eas": {
-        "projectId": "4ac0944c-3c65-4d16-9008-071a3f9cb2de"
+        "projectId": "0cbdc869-d004-4095-acb9-afe21321a3a0"
       }
     },
     "plugins": ["expo-apple-authentication"],
-    "owner": "aseffarziin"
+    "owner": "jameskay"
   }
 }
