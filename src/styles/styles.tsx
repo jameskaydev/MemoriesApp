@@ -30,9 +30,9 @@ interface OnboardingSlide {
 
 export const homeStyles = () => StyleSheet.create({
   container: {
-    flex: 1,
-    flexDirection: "column",
-    justifyContent: "space-between",
+    // flex: 1,
+    // flexDirection: "column",
+    // justifyContent: "space-between",
   }
 })
 

@@ -8,7 +8,7 @@ import { onboardingChatStyles as styles } from "../styles/styles"; // styles
 import { LinearGradient } from "expo-linear-gradient";
 
 // Components
-import ChatMessages from "../components/ChatMessages";
+import ChatMessages from "../components/onboarding/ChatMessages";
 import UserInput from "../components/onboarding/UserInput";
 import Datepicker from "../components/onboarding/Datepicker";
 

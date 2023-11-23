@@ -12,6 +12,8 @@ import { auth } from "./firebaseConfig";
 //Stacks
 import HomeStack from "./src/navigation/HomeStack";
 import AuthStack from "./src/navigation/AuthStack";
+import CaptureStack from './src/navigation/CaptureStack';
+import ModalsStack from "./src/navigation/ModalsStack";
 import SplashScreen from "./src/components/AppLoading";
 
 
@@ -36,8 +38,10 @@ export default function App() {
           headerShown: false,
         }}
       >
-        <Screen name="HomeStack" component={HomeStack} />
         <Screen name="AuthStack" component={AuthStack} />
+        <Screen name="HomeStack" component={HomeStack} />
+        <Screen name="CaptureStack" component={CaptureStack} />
+        <Screen name="Modals" component={ModalsStack} />
       </Navigator>
     </NavigationContainer>
   );

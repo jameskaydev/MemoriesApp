@@ -1,20 +1,20 @@
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { createDrawerNavigator } from '@react-navigation/drawer';
 
 // Components
 import OnboardingChat from "../screens/OnboardingChat";
 import Home from "../screens/Home";
 import Memories from "../screens/Memories";
 import Onboarding from "../screens/Onboarding";
-import Exit from "../Popups/Exit";
+import Exit from "../modals/Exit";
 import DrawerContent from "../components/DrawerContent";
-import { createDrawerNavigator } from '@react-navigation/drawer';
-
+import Memory from "../components/memories/Memory";
+import MemoryOverview from '../screens/MemoryOverview';
 
 const HomeStack = () => {
-  const Drawer = createDrawerNavigator();
+  const { Navigator, Screen } = createDrawerNavigator();
   return (
-    <Drawer.Navigator
-      initialRouteName="Home"
+    <Navigator
+      initialRouteName="MemoryOverview"
       screenOptions={{
         headerShown: false,
         drawerPosition: 'right',
@@ -25,12 +25,14 @@ const HomeStack = () => {
       }}
       drawerContent={() => <DrawerContent />}
     >
-      <Drawer.Screen name="Home" component={Home} options={{ drawerLabel: () => null }} />
-      <Drawer.Screen name="Memories" component={Memories} />
-      <Drawer.Screen name="Onboarding" component={Onboarding} />
-      <Drawer.Screen name="OnboardingChat" component={OnboardingChat} />
-      <Drawer.Screen name="Exit" component={Exit} />
-    </Drawer.Navigator>
+      <Screen name="Home" component={Home} options={{ drawerLabel: () => null }} />
+      <Screen name="Memories" component={Memories} />
+      <Screen name="Onboarding" component={Onboarding} />
+      <Screen name="OnboardingChat" component={OnboardingChat} />
+      <Screen name="Memory" component={Memory} />
+      <Screen name="MemoryOverview" component={MemoryOverview} />
+      <Screen name="Exit" component={Exit} />
+    </Navigator>
   );
 };
 

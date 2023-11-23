@@ -5,11 +5,9 @@ import {
   TouchableOpacity,
   Image,
 } from "react-native";
-// import firebas
 import { HomeStyles as styles } from "../styles/styles";
 import { useState, useEffect } from "react";
 import { auth, db } from "../../firebaseConfig";
-import * as firebase from 'firebase/app'
 import { doc, getDoc } from "firebase/firestore";
 
 const StartBox = () => {

@@ -1,6 +1,8 @@
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native'
 import React from 'react'
 import { m, h, v } from '../../utils/scale';
+import { useNavigation } from '@react-navigation/core';
+import { navigate } from '../../types/navigate';
 
 interface Props {
   date: string;
@@ -9,6 +11,7 @@ interface Props {
 }
 
 const MemoryListSlide = ({ date, image, title }: Props) => {
+  const { navigate } = useNavigation<navigate>();
   return (
     <View style={styles.mainContainer}>
       <View style={styles.dateContainer}>
@@ -27,7 +30,7 @@ const MemoryListSlide = ({ date, image, title }: Props) => {
         </View>
 
         <View style={styles.arrowContainer}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => navigate("HomeStack", {screen: "Memory"})}>
             <Image
               source={require("../../../assets/images/start_arrow.png")}
               width={6}

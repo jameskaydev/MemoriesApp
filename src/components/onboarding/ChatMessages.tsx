@@ -1,5 +1,5 @@
 import { View, StyleSheet, ScrollView, VirtualizedList, Text, TouchableOpacity } from "react-native";
-import MessageBox from "./onboarding/MessageBox";
+import MessageBox from "./MessageBox";
 import { useRef } from "react";
 
 interface ArrayProps {

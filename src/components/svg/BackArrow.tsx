@@ -16,18 +16,12 @@ const BackArrow = ({ height, width }: Props) => {
       <Path
         d="M14.5 2L2 14.5L14.5 27"
         stroke="#252525"
-        stroke-width="10"
-        stroke-miterlimit="10"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="2.5"
       />
       <Path
         d="M37.0079 14.5H2.34969"
         stroke="#252525"
-        stroke-width="10"
-        stroke-miterlimit="10"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="2.5"
       />
     </Svg>
   );
