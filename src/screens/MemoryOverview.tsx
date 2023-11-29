@@ -1,35 +1,77 @@
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { Animated, FlatList } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useNavigation } from "@react-navigation/core";
-import BackArrow from "../components/svg/BackArrow";
-import LogoSmall from "../components/svg/LogoSmall";
-import DirectSend from "../components/svg/DirectSend";
+import { useRef, useState } from "react";
+import { ExpandingDot } from "react-native-animated-pagination-dots";
+import { dataOverview } from "../constants/memoriesSample";
+import MemoryOverviewTopbar from "../components/memories/MemoryOverviewTopbar";
+import MemoryOverviewCover from "../components/memories/MemoryOverviewCover";
+import useColorAnimation from "../hooks/bgAnimation";
 
 const MemoryOverview = () => {
-  const { goBack } = useNavigation();
+  const [currentIndex, setCurrentIndex] = useState<number>(0);
+  const [prevIndex, setPreviousIndex] = useState<number>(0);
+  const [color, setColor] = useState<string>(dataOverview[currentIndex].bgColor);
+  const paginationScrollX = useRef(new Animated.Value(0)).current;
+
+  const [backgroundColor] = useColorAnimation(color);
+  const PaginationDots = () => {
+    return (
+      <ExpandingDot
+        data={["d", "s", "s", "sf", "sd"]}
+        expandingDotWidth={60}
+        scrollX={paginationScrollX}
+        inActiveDotOpacity={1}
+        dotStyle={{
+          width: 22,
+          height: 5,
+          backgroundColor: "#252525",
+          borderRadius: 20,
+          marginHorizontal: 4,
+        }}
+        containerStyle={{
+          bottom: 70,
+        }}
+        activeDotColor="#252525"
+        inActiveDotColor="#252525"
+      />
+    );
+  };
+
+  const onScroll = (event: any): void => {
+    const slideSize = event.nativeEvent.layoutMeasurement.width;
+    const index = event.nativeEvent.contentOffset.x / slideSize;
+    const roundIndex = Math.round(index);
+    if ( roundIndex !== currentIndex ) {
+      setPreviousIndex(currentIndex)
+      setCurrentIndex(roundIndex);
+      setColor(dataOverview[roundIndex].bgColor);
+
+    }
+  };
+
   return (
     <SafeAreaView>
-      <View style={styles.topbarContainer}>
-        <TouchableOpacity onPress={goBack}>
-          <BackArrow width={35} height={25} />
-        </TouchableOpacity>
-        <LogoSmall width={41} height={41} view="0 -2 40 50" />
-        {/* <TouchableOpacity onPress={() => {}}>
-          <DirectSend width={34} height={34} />
-        </TouchableOpacity> */}
-      </View>
+      <MemoryOverviewTopbar />
+      <Animated.FlatList
+        data={dataOverview}
+        // keyExtractor={keyExtractor}
+        showsHorizontalScrollIndicator={false}
+        onScroll={onScroll}
+        style={{
+          height: "100%",
+          backgroundColor: backgroundColor as never,
+        }}
+        pagingEnabled
+        horizontal
+        renderItem={({ item }) => {
+          const Comp = item.comp;
+          return <Comp index={currentIndex} prevIndex={prevIndex} />;
+        }}
+        />
+      <PaginationDots />
     </SafeAreaView>
   );
 };
 
-const styles = StyleSheet.create({
-  topbarContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingLeft: 15,
-    gap: 15,
-    marginTop: 65,
-  },
-});
 
 export default MemoryOverview;

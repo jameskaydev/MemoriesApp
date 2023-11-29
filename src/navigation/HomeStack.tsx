@@ -14,7 +14,7 @@ const HomeStack = () => {
   const { Navigator, Screen } = createDrawerNavigator();
   return (
     <Navigator
-      initialRouteName="MemoryOverview"
+      initialRouteName="Memories"
       screenOptions={{
         headerShown: false,
         drawerPosition: 'right',

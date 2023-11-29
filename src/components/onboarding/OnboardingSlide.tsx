@@ -1,10 +1,8 @@
 import {
   Text,
-  View,
   Image,
   TouchableOpacity,
   Animated,
-  Easing,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
@@ -32,7 +30,7 @@ const OnboardingSlide = (props: SlideProps) => {
   const {
     title,
     description,
-    image,
+    image, 
     dir,
     bgColor,
     txtColor,

@@ -63,7 +63,7 @@ const Memory = () => {
       <View style={styles.contentContainer}>
         <View style={styles.topbarContainer}>
           <TouchableOpacity onPress={() => {
-            shareEnabled ? handleAllAnimations() : goBack()
+            shareEnabled ? handleAllAnimations() : navigate("HomeStack", {screen: "Memories"})
           }}>
             <BackArrow width={35} height={25} />
           </TouchableOpacity>

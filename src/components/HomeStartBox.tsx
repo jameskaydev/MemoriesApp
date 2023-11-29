@@ -40,7 +40,7 @@ const StartBox = () => {
             { fontFamily: "AveriaSerifLibre_700Bold" },
           ]}
         >
-          Hey, {name}!
+          Hey, {name || "User"}!
         </Text>
         <Text
           style={[

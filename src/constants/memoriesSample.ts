@@ -1,3 +1,5 @@
+import React from "react";
+
 export const data = [
   {
     date: 'May 25th\n2020',
@@ -44,4 +46,68 @@ export const data = [
     image: require('../../assets/images/memorySample2.png'),
     title: 'Friends6'
   },
+  {
+    date: 'May 25th\n2020',
+    image: require('../../assets/images/memorySample1.png'),
+    title: 'Dinner\nw/Jay'
+  },
+  {
+    date: 'May 25th\n2020',
+    image: require('../../assets/images/memorySample1.png'),
+    title: 'Dinner\nw/Jay'
+  },
+]
+
+import MemoryOverviewCover from "../components/memories/MemoryOverviewCover"
+import MemoryOverviewText from "../components/memories/MemoryOverviewText";
+import MemoryOverviewAudio from "../components/memories/MemoryOverviewAudio";
+import MemoryOverviewVideo from "../components/memories/MemoryOverviewVideo";
+import MemoryOverviewPhoto from "../components/memories/MemoryOverviewPhoto";
+import MemoryOverviewPhotoText from "../components/memories/MemoryOverviewPhotoText";
+import MemoryOverviewVideoText from "../components/memories/MemoryOverviewVideoText";
+import MemoryOverviewAudioText from "../components/memories/MemoryOverviewAudioText";
+
+interface Props {
+  index: number;
+  prevIndex: number;
+}
+
+interface MemoryOverview {
+  comp: ({ index }: Props) => React.JSX.Element;
+  bgColor: string;
+}
+
+export const dataOverview: MemoryOverview[] = [
+  {
+    comp: MemoryOverviewCover,
+    bgColor: '#FFF'
+  },
+  {
+    comp: MemoryOverviewText,
+    bgColor: '#E9AF00'
+  },
+  {
+    comp: MemoryOverviewAudio,
+    bgColor: '#6EAC3D'
+  },
+  {
+    comp: MemoryOverviewVideo,
+    bgColor: 'green'
+  },
+  {
+    comp: MemoryOverviewPhoto,
+    bgColor: '#EC8002'
+  },
+  {
+    comp: MemoryOverviewPhotoText,
+    bgColor: '#EC8002'
+  },
+  {
+    comp: MemoryOverviewVideoText,
+    bgColor: '#036BBF'
+  },
+  {
+    comp: MemoryOverviewAudioText,
+    bgColor: '#6EAC3D'
+  }
 ]

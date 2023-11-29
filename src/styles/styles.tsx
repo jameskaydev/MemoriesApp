@@ -30,9 +30,8 @@ interface OnboardingSlide {
 
 export const homeStyles = () => StyleSheet.create({
   container: {
-    // flex: 1,
-    // flexDirection: "column",
-    // justifyContent: "space-between",
+    height: '100%',
+    justifyContent: "space-between",
   }
 })
 
@@ -167,11 +166,10 @@ export const HomeStyles = () => StyleSheet.create({
     borderWidth: 3,
     borderColor: '#252525',
     borderRadius: 30,
-    marginLeft: 15
   },
   memoryCardImage: {
     width: width * 0.65,
-    borderRadius: 30,
+    borderRadius: 26,
   },
   memoryCardInfoContainer: {
     position: 'absolute',
@@ -223,5 +221,23 @@ export const MemoriesTopBarStyles = () => StyleSheet.create({
   backArrowContainer: {
     marginLeft: h(15),
     marginRight: h(25)
+  },
+  iconsContainer: {
+    flexDirection: 'row',
+    flex: 1, 
+    alignItems: 'center', 
+    // justifyContent: 'space-between'
+  },
+  listIcon: {
+    paddingLeft: 10
+  },
+  gridIcon: {
+    paddingLeft: 8
+  },
+  imgAndIcons: {
+    flexDirection: 'row'
+  },
+  colorImgs: {
+    width: width - 90
   }
 });

@@ -5,15 +5,15 @@ import {
   StyleSheet,
   Image,
   Dimensions,
-  Button,
   Pressable,
+  ActivityIndicator,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import LogoSmall from "../components/svg/LogoSmall";
 import BackArrow from "../components/svg/BackArrow";
 import { useNavigation } from "@react-navigation/core";
 import LogoMain from "../components/svg/LogoMain";
-import { shareAsync } from "expo-sharing";
+import { shareAsync, isAvailableAsync } from "expo-sharing";
 import * as FileSystem from "expo-file-system";
 import { Video, ResizeMode } from "expo-av";
 import { useRef, useState } from "react";
@@ -29,12 +29,13 @@ const borderGreen = {
 };
 
 const ShareMemoryPic = ({ route }: any) => {
-  const { type } = route.params;
-  console.log(type);
-  const { goBack } = useNavigation();
-  const video = useRef<any>(null);
   const [status, setStatus] = useState<any>({});
   const [showPlayButton, setShowPlayButton] = useState(true);
+  const [isDownloading, setIsDownloading] = useState(false);
+  const video = useRef<any>(null);
+
+  const { type } = route.params;
+  const { goBack } = useNavigation();
 
   const handleVideoPress = () => {
     if (!showPlayButton) {
@@ -53,6 +54,8 @@ const ShareMemoryPic = ({ route }: any) => {
     }, 2000);
     if (status.isPlaying) {
       video.current.pauseAsync();
+    } else if (status.didJustFinish) {
+      video.current.playFromPositionAsync(0);
     } else {
       video.current.playAsync();
     }
@@ -73,12 +76,20 @@ const ShareMemoryPic = ({ route }: any) => {
 
   const handleVideoShare = async () => {
     try {
-      const localUri = FileSystem.documentDirectory + "memory_video.mp4";
-      await FileSystem.downloadAsync(
-        require("../../assets/videos/memory_video.mp4"),
-        localUri
+      // Change it to manage the local files too
+      if (!(await isAvailableAsync())) {
+        alert(`Uh oh, sharing isn't available on your platform`);
+        return;
+      }
+      setIsDownloading(true);
+      const { uri: localUri } = await FileSystem.downloadAsync(
+        "http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4",
+        FileSystem.documentDirectory + "temp.mp4"
       );
-      await shareAsync(localUri);
+      await shareAsync(localUri).then(() => {
+        setIsDownloading(false)
+        ;
+      })
     } catch (e) {
       console.log(e);
     }
@@ -139,19 +150,52 @@ const ShareMemoryPic = ({ route }: any) => {
               </View>
               <View
                 style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
+                  flexDirection: "column",
                   alignItems: "center",
-                  backgroundColor: "rgba(0,0,0,0.6)",
+                  position: "absolute",
+                  width: "100%",
+                  bottom: 0,
                 }}
               >
-                <Text>
-                  {status.positionMillis
-                    ? `${Math.round(status.positionMillis / 1000)} s`
-                    : ""}
-                </Text>
+                <View
+                  style={{
+                    flexDirection: "row",
+                  }}
+                >
+                  <Text
+                    style={{
+                      color: "#FFF",
+                      fontSize: 20,
+                      fontFamily: "AveriaSerifLibre_400Regular",
+                    }}
+                  >
+                    {status.positionMillis
+                      ? `${Math.round(status.positionMillis / 1000).toFixed(2)}`
+                      : "0.00"}
+                    /
+                  </Text>
+
+                  <Text
+                    style={{
+                      color: "#FFF",
+                      fontSize: 20,
+                      fontFamily: "AveriaSerifLibre_400Regular",
+                    }}
+                  >
+                    {status.durationMillis
+                      ? ` ${Math.round(status.durationMillis / 1000).toFixed(
+                          2
+                        )}`
+                      : ""}
+                  </Text>
+                </View>
                 <Slider
-                  style={{ flex: 1 }}
+                  style={{
+                    flex: 1,
+                    transform: [{ scaleY: 3 }],
+                    width: "98%",
+                    paddingBottom: 20,
+                  }}
                   value={status.positionMillis || 0}
                   maximumValue={status.durationMillis || 0}
                   onSlidingComplete={(value: any) => {
@@ -161,25 +205,18 @@ const ShareMemoryPic = ({ route }: any) => {
                   maximumTrackTintColor="#FFFFFF60"
                   thumbTintColor="transparent"
                 />
-                <Text>
-                  {status.durationMillis
-                    ? `${Math.round(status.durationMillis / 1000)} s`
-                    : ""}
-                </Text>
               </View>
             </Pressable>
           )}
           {/* ---> Video */}
 
-          {
-            type === 'pic' && (
-              <Image
-                source={require("../../assets/images/memory_3.png")}
-                style={styles.thumbnail}
-                resizeMode="cover"
-              />
-            )
-          }
+          {type === "pic" && (
+            <Image
+              source={require("../../assets/images/memory_3.png")}
+              style={styles.thumbnail}
+              resizeMode="cover"
+            />
+          )}
 
           <View style={styles.cardInfoRow}>
             <Text style={styles.cardUsername}>Josh Murrey</Text>
@@ -191,12 +228,19 @@ const ShareMemoryPic = ({ route }: any) => {
           <TouchableOpacity
             style={styles.btn}
             onPress={type === "video" ? handleVideoShare : handleImageShare}
+            disabled={isDownloading}
           >
-            <Image
-              source={require("../../assets/images/Fire.png")}
-              style={styles.btnImage}
-            />
-            <Text style={styles.btnTxt}>Share</Text>
+            {isDownloading ? (
+              <ActivityIndicator size="large" color="#252525" />
+            ) : (
+              <>
+                <Image
+                  source={require("../../assets/images/Fire.png")}
+                  style={styles.btnImage}
+                />
+                <Text style={styles.btnTxt}>Share</Text>
+              </>
+            )}
           </TouchableOpacity>
         </View>
       </View>
@@ -247,7 +291,7 @@ const styles = StyleSheet.create({
     fontFamily: "AveriaSerifLibre_700Bold",
   },
   videoContainer: {
-    marginVertical: 15
+    marginVertical: 15,
   },
   thumbnail: {
     width: "100%",

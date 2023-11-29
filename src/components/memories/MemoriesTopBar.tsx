@@ -3,9 +3,15 @@ import BackArrow from '../svg/BackArrow'
 import LogoSmall from '../svg/LogoSmall'
 import { MemoriesTopBarStyles as styles } from '../../styles/styles'; // styles
 import { useNavigation } from "@react-navigation/core";
+import setStateType from '../../types/setState';
+import Grid from '../svg/Grid';
+import List from '../svg/List';
 
-const MemoriesTopBar = () => {
-  const { width } = Dimensions.get("window")
+interface Props {
+  setIsGrid: setStateType<boolean>
+}
+
+const MemoriesTopBar = ({ setIsGrid }: Props ) => {
   const { goBack } = useNavigation()
   return (
     <View>
@@ -25,12 +31,26 @@ const MemoriesTopBar = () => {
         </Text>
       </View>
 
-      <View>
+      <View style={styles().imgAndIcons}>
         <Image source={require('../../../assets/images/home_colors.png')} 
-          style={{
-            width: width - 90
-          }}
+          style={styles().colorImgs}
         />
+        <View style={styles().iconsContainer}>
+          <TouchableOpacity 
+            style={styles().gridIcon} 
+            activeOpacity={1}
+            onPress={() => setIsGrid(true)}
+          >
+            <Grid />
+          </TouchableOpacity>
+          <TouchableOpacity 
+            style={styles().listIcon} 
+            activeOpacity={1}
+            onPress={() => setIsGrid(false)}
+          >
+            <List />
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   )
