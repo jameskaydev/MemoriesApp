@@ -7,14 +7,14 @@ interface Props {
   prevIndex: number;
 }
 
-const { width, height } = Dimensions.get("window")
+const { width, height } = Dimensions.get("screen")
 
 const MemoryOverviewAudio = ({ index }: Props) => {
   const [slideInAnimation] = useState<Animated.Value>(new Animated.Value(0))
   useEffect(() => {
     Animated.parallel([
       Animated.timing(slideInAnimation, {
-        toValue: index,
+        toValue: index === 2 ? 1 : 0,
         duration: 800,
         useNativeDriver: false,
       }),
@@ -28,6 +28,7 @@ const MemoryOverviewAudio = ({ index }: Props) => {
   return (
     <SafeAreaView style={styles.mainContainer}>
       <Animated.View style={{
+        opacity: index === 2 ? 1 : 0,
         transform: [
           // {
           //   translateX: slideOutAnimation.interpolate({
@@ -35,12 +36,12 @@ const MemoryOverviewAudio = ({ index }: Props) => {
           //     outputRange: [0, 500, -1000],
           //   }),
           // },
-          // {
-          //   translateX: slideInAnimation.interpolate({
-          //     inputRange: [index - 1, index, index + 1],
-          //     outputRange: [1000, 0, -500],
-          //   }),
-          // },
+          {
+            translateX: slideInAnimation.interpolate({
+              inputRange: [0, 1],
+              outputRange: [-500, 0],
+            }),
+          },
         ],
       }}>
  
@@ -64,7 +65,7 @@ const styles = StyleSheet.create({
     width: width,
     height: '100%',
     paddingLeft: 15,
-    backgroundColor: '#6EAC3D'
+    // backgroundColor: '#6EAC3D'
   },
   title: {
     fontSize: 32,

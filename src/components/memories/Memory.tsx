@@ -133,7 +133,9 @@ const Memory = () => {
         <View style={styles.btnContainer}>
           {
             !shareEnabled ? (
-              <TouchableOpacity style={styles.btn}>
+              <TouchableOpacity style={styles.btn} 
+                onPress={() => navigate("HomeStack", {screen: 'MemoryOverview'})}
+              >
                 <Text style={styles.btnTxt}>
                   Dive In! {"\t"}
                 </Text>

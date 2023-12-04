@@ -80,7 +80,7 @@ interface MemoryOverview {
 export const dataOverview: MemoryOverview[] = [
   {
     comp: MemoryOverviewCover,
-    bgColor: '#FFF'
+    bgColor: '#F2F2F2'
   },
   {
     comp: MemoryOverviewText,
@@ -92,11 +92,11 @@ export const dataOverview: MemoryOverview[] = [
   },
   {
     comp: MemoryOverviewVideo,
-    bgColor: 'green'
+    bgColor: '#6EAC3D'
   },
   {
     comp: MemoryOverviewPhoto,
-    bgColor: '#EC8002'
+    bgColor: '#6EAC3D'
   },
   {
     comp: MemoryOverviewPhotoText,

@@ -12,36 +12,40 @@ const { width } = Dimensions.get("window")
 const MemoryOverviewText = ({ index }: Props) => {
   const [slideInAnimation] = useState<Animated.Value>(new Animated.Value(0))
   const [slideOutAnimation] = useState<Animated.Value>(new Animated.Value(0))
-
+  const [isDone, setIsDone] = useState<boolean>(false)
   useEffect(() => {
+
     Animated.parallel([
       Animated.timing(slideInAnimation, {
-        toValue: index,
+        toValue: index === 1 ? 1 : 0,
         duration: 800,
         useNativeDriver: false,
       }),
       // Animated.timing(slideOutAnimation, {
-      //   toValue: index - 1,
+      //   toValue: isDone ? 1 : 0,
       //   duration: 800,
       //   useNativeDriver: false,
       // }),
-    ]).start();
+    ]).start(() => {
+      setIsDone(!isDone)
+    });
   }, [index])
 
   return (
     <SafeAreaView style={styles.mainContainer}>
       <Animated.Text style={[styles.txt, {
+        opacity: index === 1 ? 1 : 0,
         transform: [
-          {
-            translateX: slideOutAnimation.interpolate({
-              inputRange: [index - 1, index, index + 1],
-              outputRange: [0, 500, -1000],
-            }),
-          },
+          // {
+          //   translateX: slideOutAnimation.interpolate({
+          //     inputRange: [0, 1],
+          //     outputRange: [0, 200],
+          //   }),
+          // },
           {
             translateX: slideInAnimation.interpolate({
-              inputRange: [index - 1, index, index + 1],
-              outputRange: [1000, 0, -500],
+              inputRange: [0, 1],
+              outputRange: [500, 0],
             }),
           },
         ],

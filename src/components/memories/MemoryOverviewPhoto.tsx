@@ -26,9 +26,6 @@ const MemoryOverviewPhoto = () => {
     <SafeAreaView
       style={{
         width: width,
-        height: height,
-        borderWidth: 2,
-        borderColor: 'red'
       }}
     >
       <Pressable
@@ -36,15 +33,18 @@ const MemoryOverviewPhoto = () => {
         style={{
           width: width,
           height: height,
-          borderWidth: 2,
-          borderColor: 'green'
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          bottom: 0,
+          right: 0,
         }}
       >
         <Image 
           source={require('../../../assets/images/picpic.png')} 
           style={{
             width: '100%',
-            height: '100%'
+            height: '100%',
           }}
           resizeMode="cover"
         />

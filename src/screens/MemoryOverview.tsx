@@ -1,6 +1,6 @@
 import { Animated, FlatList } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { ExpandingDot } from "react-native-animated-pagination-dots";
 import { dataOverview } from "../constants/memoriesSample";
 import MemoryOverviewTopbar from "../components/memories/MemoryOverviewTopbar";
@@ -11,6 +11,8 @@ const MemoryOverview = () => {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [prevIndex, setPreviousIndex] = useState<number>(0);
   const [color, setColor] = useState<string>(dataOverview[currentIndex].bgColor);
+  const [slideInAnimation] = useState<Animated.Value>(new Animated.Value(0))
+  const [slideOutAnimation] = useState<Animated.Value>(new Animated.Value(0))
   const paginationScrollX = useRef(new Animated.Value(0)).current;
 
   const [backgroundColor] = useColorAnimation(color);
@@ -49,6 +51,23 @@ const MemoryOverview = () => {
     }
   };
 
+  useEffect(() => {
+    // Slides Animation
+    Animated.parallel([
+      Animated.timing(slideInAnimation, {
+        toValue: currentIndex,
+        duration: 500,
+        useNativeDriver: false,
+      }),
+      Animated.timing(slideOutAnimation, {
+        toValue: currentIndex - 1,
+        duration: 500,
+        useNativeDriver: false,
+      }),
+    ]).start();
+    
+  }, [currentIndex])
+
   return (
     <SafeAreaView>
       <MemoryOverviewTopbar />
@@ -59,10 +78,13 @@ const MemoryOverview = () => {
         onScroll={onScroll}
         style={{
           height: "100%",
-          backgroundColor: backgroundColor as never,
+          backgroundColor: backgroundColor as any,
         }}
         pagingEnabled
         horizontal
+        // @ts-ignore
+        slideInAnimation={slideInAnimation}
+        slideOutAnimation={slideOutAnimation} 
         renderItem={({ item }) => {
           const Comp = item.comp;
           return <Comp index={currentIndex} prevIndex={prevIndex} />;

@@ -43,8 +43,6 @@ const MemoryOverviewVideoText = ({ index }: Props) => {
     }, 2000);
     if (status.isPlaying) {
       video.current.pauseAsync();
-    } else {
-      video.current.playAsync();
     }
   };
 

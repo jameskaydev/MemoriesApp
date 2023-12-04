@@ -9,21 +9,20 @@ interface Props {
 }
 
 const MemoryOverviewCover = ({index, prevIndex}: Props) => {
-  const [scrollXAnimation, setScrollXAnimation] = useState(
+  const [scrollXAnimation] = useState(
     new Animated.Value(0)
   );
-  const [scrollYAnimation, setScrollYAnimation] = useState(
+  const [scrollYAnimation] = useState(
     new Animated.Value(0)
   );
-  const [scaleXAnimation, setScaleXAnimation] = useState(new Animated.Value(0));
-  const [scaleYAnimation, setScaleYAnimation] = useState(new Animated.Value(0));
+  const [scaleXAnimation] = useState(new Animated.Value(0));
+  const [scaleYAnimation] = useState(new Animated.Value(0));
   const [slideInAnimation] = useState<Animated.Value>(new Animated.Value(0))
   const [slideOutAnimation] = useState<Animated.Value>(new Animated.Value(0))
   const [done, setDone] = useState(false);
 
-  useEffect(() => {
+  useEffect(() => { 
     const handleAnim = (i:number) => {
-      // if ( [0,1].includes(i) ) {
         Animated.parallel([
           Animated.timing(scrollXAnimation, {
             toValue: i,
@@ -58,37 +57,30 @@ const MemoryOverviewCover = ({index, prevIndex}: Props) => {
         Animated.timing(slideInAnimation, {
           toValue: index,
           duration: 800,
+          easing: Easing.ease,
           useNativeDriver: false,
         }),
-        // Animated.timing(slideOutAnimation, {
-        //   toValue: index - 1,
-        //   duration: 800,
-        //   useNativeDriver: false,
-        // }),
       ]).start();
-    // };
 
     if ( [0,1].includes(index) ) {
       handleAnim(index)
     }
   }, [index])
+  
   return (
     <SafeAreaView style={styles.mainContainer}>
-      {/* <TouchableOpacity onPress={handleAnim}>
-        <Text>test</Text>
-      </TouchableOpacity> */}
       <Animated.View style={[styles.infoContainer, {
         transform: [
-          // {
-          //   translateX: slideOutAnimation.interpolate({
-          //     inputRange: [index - 1, index, index + 1],
-          //     outputRange: [500, 1, -500],
-          //   }),
-          // },
+          {
+            translateX: slideOutAnimation.interpolate({
+              inputRange: [index - 1, index, index + 1],
+              outputRange: [-500, 0, 500],
+            }),
+          },
           {
             translateX: slideInAnimation.interpolate({
               inputRange: [index - 1, index, index + 1],
-              outputRange: [0, 0, -500],
+              outputRange: [0, 0, 500],
             }),
           },
         ],

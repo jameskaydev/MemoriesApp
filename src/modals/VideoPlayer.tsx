@@ -37,6 +37,8 @@ const VideoPlayer = () => {
     }, 2000);
     if (status.isPlaying) {
       video.current.pauseAsync();
+    } else if (status.didJustFinish) {
+      video.current.playFromPositionAsync(0);
     } else {
       video.current.playAsync();
     }
